@@ -7,18 +7,11 @@ import GithubContributions from "./components/sections/GithubContributions";
 
 // Lazy load components
 const ProfileCard = lazy(() => import("./components/sections/ProfileCard"));
-const Skills = lazy(() => import("./components/sections/Skills"));
 const Projects = lazy(() => import("./components/sections/Projects"));
 const ProgrammingLanguages = lazy(
   () => import("./components/sections/ProgrammingLanguages")
 );
 const SpotifyAlbum = lazy(() => import("./components/sections/SpotifyAlbum"));
-const ExperienceItem = lazy(
-  () => import("./components/sections/ExperienceItems")
-);
-const OpenedProjects = lazy(
-  () => import("./components/sections/OpenedProjects")
-);
 
 export default function HomeClient() {
   const [experienceSection, setExperienceSection] = useState<boolean>(false);
@@ -39,28 +32,48 @@ export default function HomeClient() {
   if (loading) return <Loader />;
 
   return (
-    <main className="w-screen max-w-[1600px] mx-auto pt-6 px-32 grid grid-cols-6 grid-rows-8 max-md:gap-4 gap-4 max-lg:flex max-lg:flex-col max-md:px-2 mb-10">
-      <Suspense fallback={<Loader />}>
+  <main className="h-dvh box-border overflow-hidden bg-[#111111] p-8">
+    <div className="mx-auto grid h-full max-w-[1600px] grid-cols-[440px_minmax(0,1fr)] gap-4">
+
+      {/* LINKS */}
+      <aside className="min-h-0 overflow-hidden rounded-[16px] bg-[#202020]">
         <ProfileCard />
-        {experienceSection ? (
-          <OpenedProjects
-            onSetExperienceSection={handleSetExperienceSection}
-            className="max-md:hidden"
-          />
-        ) : (
-          <>
-            <ExperienceItem />
-            <Projects onSetExperienceSection={handleSetExperienceSection} />
+      </aside>
+
+      {/* RECHTS */}
+      <section className="grid min-h-0 grid-rows-[minmax(0,1fr)_176px_64px] gap-4">
+
+        {/* TOP */}
+        <div className="min-h-0 overflow-hidden rounded-[16px] bg-[#202020]">
+          <Projects onSetExperienceSection={handleSetExperienceSection} />
+        </div>
+
+        {/* MITTE */}
+        <div className="grid min-h-0 grid-cols-[minmax(0,1fr)_250px] gap-4">
+          <div className="min-h-0 overflow-hidden rounded-[16px] bg-[#202020]">
+            <SpotifyAlbum />
+          </div>
+
+          <div className="min-h-0 overflow-hidden rounded-[16px] bg-[#202020]">
             <ProgrammingLanguages />
-          </>
-        )}
-        <OpenedProjects className="block md:hidden" />
-        <GithubContributions />
+          </div>
+        </div>
 
-        <SpotifyAlbum />
+        {/* UNTEN */}
+<div className="grid min-h-0 grid-cols-1 gap-4 md:grid-cols-[2fr_1fr]">
 
-        <Footer />
-      </Suspense>
-    </main>
-  );
+  <div className="overflow-hidden rounded-[16px] bg-[#202020]">
+    <GithubContributions />
+  </div>
+
+  <div className="overflow-hidden rounded-[16px] bg-[#202020]">
+    <Footer />
+  </div>
+
+</div>
+
+      </section>
+    </div>
+  </main>
+);
 }

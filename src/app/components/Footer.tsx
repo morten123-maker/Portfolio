@@ -1,36 +1,25 @@
-import React from "react";
-
 export default function Footer() {
   return (
-    <footer className="max-lg:col-span-1  max-lg:row-span-1 col-span-6 items-center text-center mb-10">
-      <p className="text-spotify-light-gray max-md:text-sm">
-        &copy; {new Date().getFullYear()} Luan
-      </p>
-      <p className="text-spotify-light-gray max-md:text-sm mt-5">
-        Built with NextJS, TailwindCSS, and Aceternity UI. Check out the source
-        code{" "}
-        <a
-          target="_blank"
-          href="https://github.com/LuaanNguyen/portfolio"
-          className="text-spotify-green font-semibold underline"
-          rel="noopener noreferrer"
-        >
-          here
-        </a>
-        .
-      </p>
-      <p className="text-spotify-light-gray max-md:text-sm mt-3">
-        Want the website template? Use{" "}
-        <a
-          target="_blank"
-          href="https://github.com/LuaanNguyen/spotify-portfolio"
-          className="text-spotify-green font-semibold underline"
-          rel="noopener noreferrer"
-        >
-          spotify-portfolio
-        </a>
-        .
-      </p>
-    </footer>
+    <div className="flex h-full items-center justify-between px-4 text-sm">
+
+      {/* LEFT TEXT (kein Button) */}
+      <div
+        onClick={() => window.location.href = "mailto:deinemail@example.com"}
+        className="flex cursor-pointer items-center gap-2 text-[#bdbdbd] transition hover:text-white"
+      >
+        <span>💬</span>
+        <span>Write a message</span>
+      </div>
+
+      {/* RIGHT BUTTON */}
+      <button
+        onClick={() => window.open("https://deinewebsite.de/contact", "_blank")}
+        className="flex items-center gap-2 rounded-[12px] bg-[#2a2a2a] px-4 py-2 text-white transition-all duration-200 hover:bg-[#3a3a3a] hover:scale-[1.02] active:scale-[0.98]"
+      >
+        <span>📞</span>
+        <span>Get in touch</span>
+      </button>
+
+    </div>
   );
 }

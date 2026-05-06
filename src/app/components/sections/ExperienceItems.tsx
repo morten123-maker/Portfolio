@@ -13,7 +13,7 @@ import {
 export default function ExperienceItem() {
   return (
     <section
-      className="relative col-span-2 row-span-4 col-start-3 bg-spotify-light-dark rounded-xl max-md:overflow-y-scroll overflow-hidden max-md:col-span-1"
+      className="relative bg-spotify-light-dark rounded-xl max-md:overflow-y-scroll overflow-hidden max-md:"
       id="experience"
     >
       <div className="bg-spotify-gray px-6 py-4">

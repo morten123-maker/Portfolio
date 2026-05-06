@@ -1,13 +1,46 @@
 // layout.tsx
+import localFont from "next/font/local";
 import type { Metadata } from "next";
 import "./globals.css";
-import Navigation from "./components/Navigation";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 
+const avenir = localFont({
+  src: [
+    {
+      path: "./fonts/AvenirNextCyr-Regular.woff",
+      weight: "400",
+      style: "normal",
+    },
+    {
+      path: "./fonts/AvenirNextCyr-Medium.woff",
+      weight: "500",
+      style: "normal",
+    },
+    {
+      path: "./fonts/AvenirNextCyr-Demi.woff",
+      weight: "600",
+      style: "normal",
+    },
+    {
+      path: "./fonts/AvenirNextCyr-Bold.woff",
+      weight: "700",
+      style: "normal",
+    },
+    {
+      path: "./fonts/AvenirNextCyr-Heavy.woff",
+      weight: "800",
+      style: "normal",
+    },
+  ],
+  variable: "--font-avenir",
+});
+
+<html lang="de" className={avenir.variable}></html>
+
 export const metadata: Metadata = {
   metadataBase: new URL("https://luannguyen.net"),
-  title: "Luan Nguyen",
+  title: "Morten Franken",
   description: "Software Engineer",
   keywords: ["Luan Nguyen", "Software Engineer", "AI/ML", "Cloud Computing"],
   creator: "Luan Nguyen",
@@ -21,7 +54,7 @@ export const metadata: Metadata = {
     type: "website",
     locale: "en_US",
     url: "https://luannguyen.net",
-    title: "Luan Nguyen",
+    title: "Morten Franken",
     description: "Software Engineer",
     siteName: "Luan Nguyen's Portfolio",
     images: [
@@ -29,14 +62,14 @@ export const metadata: Metadata = {
         url: "/portfolio_highres.png",
         width: 1920,
         height: 1440,
-        alt: "Luan Nguyen Portfolio",
+        alt: "Morten Portfolio",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Luan Nguyen",
-    description: "Software Engineer",
+    title: "Morten Franken",
+    description: "Digital Designer",
     images: ["/portfolio_highres.png"],
   },
   robots: {
@@ -90,9 +123,8 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body className="font-sans">
+      <body className={avenir.className}>
         <header>
-          <Navigation />
         </header>
         {children}
         <Analytics />

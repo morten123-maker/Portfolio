@@ -2,6 +2,11 @@
 @tailwind components;
 @tailwind utilities;
 
+body {
+  font-family: var(--font-avenir), sans-serif;
+}
+
+
 html {
   scroll-behavior: smooth;
 }
@@ -90,4 +95,20 @@ body {
 * {
   scrollbar-width: thin;
   scrollbar-color: #444 #1a1a1a;
+}
+@keyframes wave {
+  0%, 100% {
+    transform: scaleY(0.45);
+  }
+
+  50% {
+    transform: scaleY(1.25);
+  }
+}
+
+.animate-wave {
+  animation-name: wave;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+  transform-origin: bottom;
 }

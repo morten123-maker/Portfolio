@@ -1,154 +1,251 @@
-import { StickyScroll } from "../ui/sticky-scroll-reveal";
+"use client";
+
+import { useState, useEffect, useCallback } from "react";
 import Image from "next/image";
 import { ProjectsProps } from "../../page";
-import { GrLinkNext } from "react-icons/gr";
-import { FaArrowDown } from "react-icons/fa6";
+import { GrLinkNext, GrLinkPrevious } from "react-icons/gr";
+
+type Project = {
+  title: string;
+  duration: string;
+  role: string;
+  description: string;
+  images: {
+    src: string;
+    alt: string;
+  }[];
+  year: string;
+  figmaUrl?: string;
+};
+
+const projects: Project[] = [
+  {
+    title: "MINTvernetzt",
+    duration: "3 years",
+    role: "working student at MINTvernetzt",
+    description:
+      "During my three years as a working student at MINTvernetzt, I worked as a UX/UI Designer on the MINTvernetzt community platform and related digital products such as the MINT-Mediendatenbank. I contributed to multiple features across the platform, covering the full design process from concept and wireframing to UI design and prototyping in Figma. My work was strongly user-centered, including planning and conducting user tests and workshops to validate and improve design decisions.",
+    images: [
+      {
+        src: "/mintvernetzt.png",
+        alt: "MINTvernetzt project preview",
+      },
+    ],
+    year: "2023 - 2026",
+    figmaUrl: "#",
+  },
+  {
+    title: "Globetrotter web app",
+    duration: "8 weeks",
+    role: "Internship at Curios Company",
+    description:
+      "As the Designer, I was part of the development of a mobile app for Globetrotter Stores in Hamburg. Within my internship semester from October 2022 to April 2023, I was involved in a web app for Globetrotter, among others. The work process included concept, mockup & styleframes, UX, UI, and concept adaptation. We used Figma for UI/UX and prototyping and Illustrator for the illustrations.",
+    images: [
+      {
+        src: "/globetrotter.png",
+        alt: "Globetrotter web app preview",
+      },
+    ],
+    year: "2022",
+    figmaUrl: "#",
+  },
+  {
+    title: "Connected Dependencies",
+    duration: "6 weeks",
+    role: "Exhibition in Berlin",
+    description:
+      "Connected Dependencies is an exhibition project exploring interaction, connection and dependency between humans, digital systems and physical space. The project combines visual storytelling, spatial design and interaction design into an immersive installation experience.",
+    images: [
+      {
+        src: "/connected-dependencies.png",
+        alt: "Connected Dependencies exhibition preview",
+      },
+    ],
+    year: "2023",
+    figmaUrl: "#",
+  },
+];
 
 export default function Projects({ onSetExperienceSection }: ProjectsProps) {
-  return (
-    <div
-      className="max-md:hidden max-lg:col-span-1 max-lg:row-span-1 col-span-2 row-span-6 col-start-5 bg-spotify-light-dark rounded-xl overflow-hidden"
-      id="projects"
-    >
-      <div className="p-4">
-        <div className="flex gap-3 justify-center sm:flex-auto">
-          {/* Primary Button (Green) */}
-          <button
-            className="flex items-center justify-center text-sm font-bold 
-            bg-spotify-green/10 border-spotify-green hover:scale-105 
-            px-5 py-2 rounded-xl gap-2 
-            min-w-[180px] text-spotify-green mb-0.5 transition-all duration-200 w-fit hover:bg-spotify-green/10 cursor-pointer"
-            aria-label="View featured projects below"
-          >
-            Featured Projects
-            <FaArrowDown className="text-base" />
-          </button>
+  const [currentProjectIndex, setCurrentProjectIndex] = useState(0);
+  const [currentImageIndexes, setCurrentImageIndexes] = useState<number[]>(
+    projects.map(() => 0)
+  );
+  const [showProjects, setShowProjects] = useState(false);
 
-          {/* Secondary Button (White Border) */}
+  const currentProject = projects[currentProjectIndex];
+  const currentImageIndex = currentImageIndexes[currentProjectIndex];
+  const currentImage = currentProject.images[currentImageIndex];
+
+  const resetToStart = useCallback(() => {
+    setShowProjects(false);
+    setCurrentProjectIndex(0);
+    setCurrentImageIndexes(projects.map(() => 0));
+  }, []);
+
+  function nextProject() {
+    setCurrentProjectIndex((prev) => (prev + 1) % projects.length);
+  }
+
+  function previousProject() {
+    setCurrentProjectIndex((prev) =>
+      prev === 0 ? projects.length - 1 : prev - 1
+    );
+  }
+
+  function setProjectImage(projectIndex: number, imageIndex: number) {
+    setCurrentImageIndexes((prev) => {
+      const next = [...prev];
+      next[projectIndex] = imageIndex;
+      return next;
+    });
+  }
+
+  useEffect(() => {
+    if (!showProjects) return;
+
+    let resetTimer: ReturnType<typeof setTimeout>;
+
+    const startTimer = () => {
+      clearTimeout(resetTimer);
+      resetTimer = setTimeout(resetToStart, 30000);
+    };
+
+    startTimer();
+
+    window.addEventListener("click", startTimer);
+    window.addEventListener("keydown", startTimer);
+    window.addEventListener("mousemove", startTimer);
+    window.addEventListener("touchstart", startTimer);
+
+    return () => {
+      clearTimeout(resetTimer);
+      window.removeEventListener("click", startTimer);
+      window.removeEventListener("keydown", startTimer);
+      window.removeEventListener("mousemove", startTimer);
+      window.removeEventListener("touchstart", startTimer);
+    };
+  }, [showProjects, resetToStart]);
+
+  return (
+    <section
+      id="projects"
+      className="max-md:hidden h-full overflow-hidden rounded-xl bg-[#202020]"
+    >
+      {!showProjects ? (
+        <div className="relative h-full min-h-[420px] overflow-hidden rounded-xl">
+          <Image
+            src="/graphic.png"
+            alt="Project preview"
+            fill
+            priority
+            className="object-cover"
+          />
+
+          <div className="absolute inset-0 bg-black/20" />
+
           <button
-            className="flex items-center justify-center text-sm font-bold 
-            border border-[#727272] hover:border-white hover:scale-105 
-            text-white px-5 py-3 rounded-xl gap-2 transition-all duration-200
-            animate-pulse hover:animate-none hover:bg-white hover:text-black
-            shadow-[0_0_15px_rgba(255,255,255,0.3)] hover:shadow-[0_0_20px_rgba(255,255,255,0.5)]
-            min-w-[180px]"
-            onClick={onSetExperienceSection}
-            aria-label="Explore all projects in expanded view"
+            onClick={() => setShowProjects(true)}
+            className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2
+            rounded-lg bg-[#b84a3c] px-6 py-3 text-sm font-semibold text-white
+            transition-all duration-200 hover:scale-105 hover:bg-[#c95749]"
           >
-            Explore All Projects
-            <GrLinkNext className="text-base" />
+            View Projects
           </button>
         </div>
-      </div>
-      <StickyScroll content={projectLists} />
-    </div>
+      ) : (
+        <div className="flex h-full min-h-[420px] flex-col gap-6 p-4">
+          <div className="grid min-h-0 flex-1 grid-cols-[1.15fr_1fr] gap-6 max-xl:grid-cols-1">
+            <div className="min-h-0 overflow-y-auto pr-2">
+              <h2 className="text-3xl font-bold text-white">
+                {currentProject.title}
+              </h2>
+
+              <p className="mt-2 text-sm font-semibold text-white">
+                {currentProject.duration} • {currentProject.role}
+              </p>
+
+              <p className="mt-5 max-w-xl text-base leading-relaxed text-[#cfcfcf]">
+                {currentProject.description}
+              </p>
+
+              <a
+                href={currentProject.figmaUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-7 inline-flex w-fit items-center gap-2 rounded-lg border border-[#727272]
+                px-4 py-2 text-sm font-semibold text-white transition-all duration-200
+                hover:border-white hover:bg-white hover:text-black"
+              >
+                Discover more
+                <span className="text-base">🎨</span>
+              </a>
+            </div>
+
+            <div className="flex min-h-0 flex-col">
+              <div className="relative min-h-[220px] flex-1 overflow-hidden rounded-lg bg-white">
+                <Image
+                  src={currentImage.src}
+                  alt={currentImage.alt}
+                  fill
+                  className="object-cover"
+                />
+              </div>
+
+              <div className="mt-3 flex items-center justify-between">
+                <div className="flex gap-1.5">
+                  {currentProject.images.map((_, index) => (
+                    <button
+                      key={index}
+                      onClick={() =>
+                        setProjectImage(currentProjectIndex, index)
+                      }
+                      aria-label={`Show image ${index + 1}`}
+                      className={`h-2 w-2 rounded-full transition-all ${
+                        index === currentImageIndex
+                          ? "bg-white"
+                          : "bg-white/30 hover:bg-white/60"
+                      }`}
+                    />
+                  ))}
+                </div>
+
+                <p className="text-sm font-semibold text-[#cfcfcf]">
+                  {currentProject.year}
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div className="flex flex-wrap items-center justify-between gap-6 rounded-[14px] bg-[#2a2a2a] p-3">
+            <p className="shrink-0 text-sm text-[#cfcfcf]">
+              {currentProjectIndex + 1} of {projects.length} Projects
+            </p>
+
+            <div className="flex shrink-0 flex-wrap items-center gap-3">
+              <button
+                onClick={previousProject}
+                className="flex items-center gap-2 rounded-lg border border-[#727272]
+                px-4 py-2 text-sm font-semibold text-white transition-all duration-200
+                hover:border-white hover:bg-white hover:text-black"
+              >
+                <GrLinkPrevious />
+                Previous Project
+              </button>
+
+              <button
+                onClick={nextProject}
+                className="flex items-center gap-2 rounded-lg border border-[#727272]
+                px-4 py-2 text-sm font-semibold text-white transition-all duration-200
+                hover:border-white hover:bg-white hover:text-black"
+              >
+                Next Project
+                <GrLinkNext />
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+    </section>
   );
 }
-
-const projectLists: {
-  title: string;
-  description: string;
-  content?: React.ReactNode | any;
-}[] = [
-  {
-    title: "🍵 Sip n Play Café Website (Codédex Hackathon Winner 🏆)",
-    description:
-      "My first hackathon win. Sip & Play is an interactive website for a NYC board game café, featuring a 500+ game catalog and a 3D animated menu. It won Best UI/UX Design at the Codédex Hackathon.",
-    content: (
-      <a
-        target="_blank"
-        rel="noopener noreferrer"
-        href="https://board-game-cafe-website.vercel.app/"
-      >
-        <Image
-          src={`/codedex-hackathon.jpeg`}
-          alt="Sip n Play Cafe Website"
-          width={500}
-          height={500}
-          sizes="500px"
-        />
-      </a>
-    ),
-  },
-  {
-    title: "Brainrot Master Vault (HackPrinceton 2025 Winner 🏆)",
-    description:
-      "BrainRot Master Vault turns short-form videos into AI-curated podcast episodes and knowledge graphs. Built at HackPrinceton 2025 and won Best Self-Hosted Inference.",
-    content: (
-      <a
-        target="_blank"
-        rel="noopener noreferrer"
-        href="https://www.brainrotmastervaultovercooked.tech/"
-      >
-        <Image
-          src={`/gallery.jpg`}
-          alt="Brainrot Master Vault Website"
-          width={500}
-          height={500}
-          sizes="500px"
-        />
-      </a>
-    ),
-  },
-  {
-    title: "🌎 ASU Network",
-    description:
-      "A community directory and social graph for ASU builders, engineers, designers, and creators, making it easier to discover people by skill, role, and connections.",
-    content: (
-      <a
-        target="_blank"
-        rel="noopener noreferrer"
-        href="https://asunetwork.com"
-      >
-        <Image
-          src={`/blogs/asunetwork.png`}
-          alt="ASU Network"
-          width={500}
-          height={300}
-          sizes="500px"
-        />
-      </a>
-    ),
-  },
-
-  // {
-  //   title: " 📚 rateourclub.com",
-  //   description:
-  //     "Community-driven platform where students can rate and review 100+ college organizations, just like Rate My Professor",
-  //   content: (
-  //     <a
-  //       target="_blank"
-  //       rel="noopener noreferrer"
-  //       href="https://rateourclub.com"
-  //     >
-  //       <Image
-  //         src={`/rateourclub.png`}
-  //         alt="rateourclub.com"
-  //         loading="lazy"
-  //         width={500}
-  //         height={300}
-  //       />
-  //     </a>
-  //   ),
-  // },
-  // {
-  //   title: "Mine Alliance ⛏️ (Principled Innovation Hackathon Winner 🏆)",
-  //   description:
-  //     "Mine Alliance is a platform that connects Arizona’s mining communities, corporations, and regulators through real-time data and environmental insights.",
-  //   content: (
-  //     <a
-  //       target="_blank"
-  //       rel="noopener noreferrer"
-  //       href="https://github.com/LuaanNguyen/epics-mern"
-  //     >
-  //       <Image
-  //         src={`/Mine_Alliance.png`}
-  //         alt="Mine Alliance"
-  //         loading="lazy"
-  //         width={500}
-  //         height={300}
-  //       />
-  //     </a>
-  //   ),
-  // },
-];
