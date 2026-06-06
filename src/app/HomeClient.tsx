@@ -1,79 +1,333 @@
 "use client";
 
-import { useState, useEffect, Suspense, lazy } from "react";
-import Footer from "./components/Footer";
-import Loader from "./components/ui/Loader";
-import GithubContributions from "./components/sections/GithubContributions";
+import { useEffect, useState } from "react";
+import Projects from "./components/sections/Projects";
+import SpotifyAlbum from "./components/sections/SpotifyAlbum";
 
-// Lazy load components
-const ProfileCard = lazy(() => import("./components/sections/ProfileCard"));
-const Projects = lazy(() => import("./components/sections/Projects"));
-const ProgrammingLanguages = lazy(
-  () => import("./components/sections/ProgrammingLanguages")
-);
-const SpotifyAlbum = lazy(() => import("./components/sections/SpotifyAlbum"));
+type ActiveView = "overview" | "profile";
 
-export default function HomeClient() {
-  const [experienceSection, setExperienceSection] = useState<boolean>(false);
-  const [loading, setLoading] = useState<boolean>(true);
+type ResumeRow = {
+  title: string;
+  meta: string;
+};
 
-  function handleSetExperienceSection() {
-    setExperienceSection((prev) => !prev);
-  }
+const designExperienceRows: ResumeRow[] = [
+  { title: "UX/UI working student", meta: "3 years • MINTvernetzt at Matrix gGmbH" },
+  { title: "Internship at Curious Company", meta: "1/2 years • working student at MINTvernetzt" },
+  { title: "UX/UI working student", meta: "1 year • working student at Schüco" },
+  { title: "Bachelor of Arts, coming soon", meta: "Digital Media and Experiment" },
+  { title: "Design System Practice", meta: "Components • documentation • UI patterns" },
+  { title: "Design Workshop Facilitation", meta: "Kids workshops • UX basics • playful prototyping" },
+];
+
+const otherExperienceRows: ResumeRow[] = [
+  { title: "Workshop Instructor", meta: "Figma • UX basics • creative learning" },
+  { title: "Facilitation", meta: "User tests • interviews • team workshops" },
+  { title: "Freelance Visual Work", meta: "Motion • 3D • generative experiments" },
+  { title: "Research and Concept", meta: "Human-centered design • interaction flows" },
+  { title: "Community Projects", meta: "Digital products for education and culture" },
+  { title: "Interactive Prototyping", meta: "Figma • design systems • front-end handoff" },
+];
+
+const profileSliderImages = ["/profil-1.jpg", "/profil-2-auto.jpg", "/profil-3.jpg"];
+
+const taglines = [
+  "I believe good design belongs to everyone.",
+  "I design for people, communities, and the spaces between them.",
+  "I believe honest design is the most powerful design.",
+  " I create with empathy, curiosity, and a bias for freedom.",
+  "I believe design should open doors, not close them.",
+  "I listen first. Then I design."
+];
+
+/* ── Topline with typewriter effect ──────────────────────── */
+function SiteTopline({ onOverviewClick }: { onOverviewClick: () => void }) {
+  const [index, setIndex] = useState(0);
+  const [displayed, setDisplayed] = useState("");
+  const [deleting, setDeleting] = useState(false);
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setLoading(false);
-    }, 500);
+    const current = taglines[index];
 
-    return () => clearTimeout(timer);
-  }, []);
+    if (!deleting && displayed.length < current.length) {
+      const timeout = setTimeout(() => {
+        setDisplayed(current.slice(0, displayed.length + 1));
+      }, 38);
+      return () => clearTimeout(timeout);
+    }
 
-  if (loading) return <Loader />;
+    if (!deleting && displayed.length === current.length) {
+      const timeout = setTimeout(() => setDeleting(true), 15000);
+      return () => clearTimeout(timeout);
+    }
+
+    if (deleting && displayed.length > 0) {
+      const timeout = setTimeout(() => {
+        setDisplayed(displayed.slice(0, -1));
+      }, 18);
+      return () => clearTimeout(timeout);
+    }
+
+    if (deleting && displayed.length === 0) {
+      setDeleting(false);
+      setIndex((prev) => (prev + 1) % taglines.length);
+    }
+  }, [displayed, deleting, index]);
 
   return (
-  <main className="h-dvh box-border overflow-hidden bg-[#111111] p-8">
-    <div className="mx-auto grid h-full max-w-[1600px] grid-cols-[440px_minmax(0,1fr)] gap-4">
-
-      {/* LINKS */}
-      <aside className="min-h-0 overflow-hidden rounded-[16px] bg-[#202020]">
-        <ProfileCard />
-      </aside>
-
-      {/* RECHTS */}
-      <section className="grid min-h-0 grid-rows-[minmax(0,1fr)_176px_64px] gap-4">
-
-        {/* TOP */}
-        <div className="min-h-0 overflow-hidden rounded-[16px] bg-[#202020]">
-          <Projects onSetExperienceSection={handleSetExperienceSection} />
-        </div>
-
-        {/* MITTE */}
-        <div className="grid min-h-0 grid-cols-[minmax(0,1fr)_250px] gap-4">
-          <div className="min-h-0 overflow-hidden rounded-[16px] bg-[#202020]">
-            <SpotifyAlbum />
-          </div>
-
-          <div className="min-h-0 overflow-hidden rounded-[16px] bg-[#202020]">
-            <ProgrammingLanguages />
-          </div>
-        </div>
-
-        {/* UNTEN */}
-<div className="grid min-h-0 grid-cols-1 gap-4 md:grid-cols-[2fr_1fr]">
-
-  <div className="overflow-hidden rounded-[16px] bg-[#202020]">
-    <GithubContributions />
-  </div>
-
-  <div className="overflow-hidden rounded-[16px] bg-[#202020]">
-    <Footer />
-  </div>
-
-</div>
-
-      </section>
+    <div className="site-topline" aria-label="Intro">
+      <button type="button" className="site-brand" onClick={onOverviewClick}>
+        <strong>UX/UI Designer</strong>
+        <span> – {displayed}<span aria-hidden="true">|</span></span>
+      </button>
     </div>
-  </main>
-);
+  );
+}
+
+/* ── Bottombar ────────────────────────────────────────────── */
+function SiteBottomBar({
+  showSpotify,
+  onOverviewClick,
+  isOverviewActive,
+}: {
+  showSpotify: boolean;
+  onOverviewClick: () => void;
+  isOverviewActive: boolean;
+}) {
+  return (
+    <div
+      className={[
+        "site-bottombar",
+        showSpotify ? "site-bottombar--profile" : "site-bottombar--overview",
+      ].join(" ")}
+      aria-label="Navigation"
+    >
+      {showSpotify ? <SpotifyAlbum /> : <span className="site-bottombar__spacer" />}
+
+      <nav className="site-bottombar__legal" aria-label="Legal">
+        <a href="/impressum" className="site-bottombar__legal-link">Legal Notice</a>
+        <span className="site-bottombar__divider" aria-hidden="true" />
+        <a href="/datenschutz" className="site-bottombar__legal-link">Privacy Policy</a>
+      </nav>
+
+      <button
+        type="button"
+        className={["site-bottombar__overview", isOverviewActive ? "is-active" : ""]
+          .filter(Boolean)
+          .join(" ")}
+        onClick={onOverviewClick}
+        aria-current={isOverviewActive ? "page" : undefined}
+      >
+        <img
+          src="/icons/dashboard-square-02.svg"
+          alt=""
+          aria-hidden="true"
+          className="site-bottombar__overview-icon"
+        />
+        <span>Overview</span>
+      </button>
+    </div>
+  );
+}
+
+/* ── Resume list ──────────────────────────────────────────── */
+function ResumeList({ rows }: { rows: ResumeRow[] }) {
+  return (
+    <div className="resume-list">
+      {rows.map((row) => (
+        <article key={`${row.title}-${row.meta}`} className="resume-list__row">
+          <h3>{row.title}</h3>
+          <p>{row.meta}</p>
+        </article>
+      ))}
+    </div>
+  );
+}
+
+/* ── Hover resume card ────────────────────────────────────── */
+function HoverResumeCard({
+  title,
+  rows,
+  ariaLabel,
+}: {
+  title: string;
+  rows: ResumeRow[];
+  ariaLabel: string;
+}) {
+  return (
+    <section className="profile-hover-card" aria-label={ariaLabel} tabIndex={0}>
+      <ResumeList rows={rows} />
+      <span className="resume-list__scroll-hint" aria-hidden="true">
+        <span>Scroll</span>
+        <span>↓</span>
+      </span>
+      <h2>{title}</h2>
+    </section>
+  );
+}
+
+/* ── Profile image slider ─────────────────────────────────── */
+function ProfileImageSlider() {
+  const [activeImage, setActiveImage] = useState(0);
+
+  useEffect(() => {
+    const timer = window.setInterval(() => {
+      setActiveImage((current) => (current + 1) % profileSliderImages.length);
+    }, 15000);
+    return () => window.clearInterval(timer);
+  }, []);
+
+  return (
+    <div className="profile-image-slider" aria-label="Profile image slider">
+      <div
+        className="profile-image-slider__track"
+        style={{ transform: `translate3d(-${activeImage * 100}%, 0, 0)` }}
+      >
+        {profileSliderImages.map((src, index) => (
+          <img
+            key={`${src}-${index}`}
+            src={src}
+            alt=""
+            className="profile-image-slider__image"
+            onError={(event) => { event.currentTarget.src = "/profil-1.jpg"; }}
+          />
+        ))}
+      </div>
+
+      <div className="profile-image-slider__dots">
+        {profileSliderImages.map((src, index) => (
+          <button
+            type="button"
+            key={`${src}-dot`}
+            className={[
+              "profile-image-slider__dot",
+              activeImage === index ? "profile-image-slider__dot--active" : "",
+            ].filter(Boolean).join(" ")}
+            onClick={() => setActiveImage(index)}
+            aria-label={`Bild ${index + 1}`}
+          />
+        ))}
+      </div>
+    </div>
+  );
+}
+
+/* ── Profile intro card ───────────────────────────────────── */
+function ProfileIntroCard() {
+  return (
+    <article className="profile-intro-card" aria-label="About Morten Franken">
+      <ProfileImageSlider />
+      <div className="profile-intro-card__copy">
+        <p className="profile-intro-card__name">(He/Him)</p>
+        <h1>Hallo, I'm Morten</h1>
+        <p>I&apos;m a digital designer who believes great experiences start with listening.
+</p>
+        <p>
+          I approach every project by getting close to people – their needs, their frustrations, their everyday realities. Design, for me, isn't about aesthetics alone. It's about creating spaces where people feel understood, empowered, and free.
+        </p>
+        <p>I work best in collaboration: thinking together, building together, questioning together. I take on projects I believe in – ones that connect communities, remove barriers, and leave something useful behind.</p>
+      </div>
+    </article>
+  );
+}
+
+/* ── All Design Projects tile ─────────────────────────────── */
+function AllDesignProjectsTile({ onOverviewClick }: { onOverviewClick: () => void }) {
+  return (
+    <button
+      type="button"
+      className="profile-design-projects"
+      onClick={onOverviewClick}
+      aria-label="Alle Designprojekte öffnen"
+    >
+      <span className="profile-design-projects__label">
+        <span>All Design Projects</span>
+        <span className="profile-design-projects__arrow" aria-hidden="true">
+          <svg width="24" height="18" viewBox="0 0 24 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path
+              d="M1 9H22M15 2L22 9L15 16"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </svg>
+        </span>
+      </span>
+    </button>
+  );
+}
+
+/* ── Profile view ─────────────────────────────────────────── */
+function ProfileView({ onOverviewClick }: { onOverviewClick: () => void }) {
+  return (
+    <section className="profile-view" aria-label="About me">
+      <div className="profile-grid">
+        <ProfileIntroCard />
+        <HoverResumeCard
+          title="Design Experience"
+          rows={designExperienceRows}
+          ariaLabel="Design Experience"
+        />
+        <HoverResumeCard
+          title="Other Experience"
+          rows={otherExperienceRows}
+          ariaLabel="Other Experience"
+        />
+        <AllDesignProjectsTile onOverviewClick={onOverviewClick} />
+      </div>
+    </section>
+  );
+}
+
+/* ── Main ─────────────────────────────────────────────────── */
+export default function HomeClient() {
+  const [activeView, setActiveView] = useState<ActiveView>("overview");
+  const [activeProjectIndex, setActiveProjectIndex] = useState<number | null>(null);
+
+  function openProfile() {
+    setActiveView("profile");
+    setActiveProjectIndex(null);
+  }
+
+  function openProject(index: number) {
+    setActiveView("overview");
+    setActiveProjectIndex(index);
+  }
+
+  function openOverview() {
+    setActiveView("overview");
+    setActiveProjectIndex(null);
+  }
+
+  const isOverviewActive = activeView === "overview" && activeProjectIndex === null;
+
+  return (
+    <main className="portfolio-shell">
+      {activeProjectIndex === null && (
+        <SiteTopline onOverviewClick={openOverview} />
+      )}
+
+      <div className={["portfolio-viewport", activeProjectIndex !== null ? "portfolio-viewport--project-open" : ""].filter(Boolean).join(" ")}>
+        {activeView === "profile" ? (
+          <ProfileView onOverviewClick={openOverview} />
+        ) : (
+          <Projects
+            activeProjectIndex={activeProjectIndex}
+            onProjectSelect={openProject}
+            onBackToOverview={openOverview}
+            onProfileSelect={openProfile}
+          />
+        )}
+      </div>
+
+      {activeProjectIndex === null && (
+        <SiteBottomBar
+          showSpotify={activeView === "profile"}
+          onOverviewClick={openOverview}
+          isOverviewActive={isOverviewActive}
+        />
+      )}
+    </main>
+  );
 }

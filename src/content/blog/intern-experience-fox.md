@@ -5,7 +5,7 @@ date: "April 18, 2026"
 readTime: "15 min read"
 image: "/blogs/fox.JPG"
 slug: "intern-experience-fox"
-author: "Luan Nguyen"
+author: "Morten Franken"
 tags:
   [
     "FOX",

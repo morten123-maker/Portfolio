@@ -1,90 +1,84 @@
 "use client";
 
-import React from "react";
-import ProfileImage from "./ProfileImage.tsx";
-import { FaPlay } from "react-icons/fa6";
+import MotionVideo from "./MotionVideo";
 
+type ProfileCardProps = {
+  mode?: "sidebar" | "panel";
+  activeView?: "projects" | "profile";
+  activeProjectIndex?: number | null;
+  onProfileClick?: () => void;
+  onOverviewClick?: () => void;
+  onProjectClick?: (index: number) => void;
+};
 
+const competencies = [
+  { name: "UX", icon: "ux" },
+  { name: "UI", icon: "ui" },
+  { name: "Design System", icon: "system" },
+  { name: "Design with AI", icon: "ai" },
+  { name: "3D", icon: "3d" },
+  { name: "Motion Design", icon: "motion" },
+];
 
-export default function ProfileCard() {
+export default function ProfileCard({ onProfileClick }: ProfileCardProps) {
   return (
-    <aside
-      id="profile"
-      className="h-full max-h-full overflow-y-auto rounded-[18px] bg-[#202020] p-5 text-white
-      scrollbar-thin scrollbar-thumb-[#4a4a4a] scrollbar-track-transparent"
-    >
-      <div className="flex min-h-full flex-col gap-7">
-        <div className="shrink-0">
-          <ProfileImage />
-        </div>
-
-        <PersonalStatement />
-        <Competencies />
-      </div>
-    </aside>
+    <button type="button" className="legacy-profile-card" onClick={onProfileClick}>
+      <span className="legacy-profile-card__media" aria-hidden="true">
+        <MotionVideo
+          src="/Profile-1.mp4"
+          active
+          mode="loop"
+          poster="/profil-1.jpg"
+          fallbackImage="/profil-1.jpg"
+          className="legacy-profile-card__motion"
+          videoClassName="legacy-profile-card__video"
+        />
+      </span>
+      <span className="legacy-profile-card__copy">
+        <span>Morten Franken</span>
+        <strong>Hallooooo!</strong>
+      </span>
+    </button>
   );
 }
 
-function PersonalStatement() {
+export function ProfilePanel() {
   return (
-    <div className="flex flex-col gap-4 px-1">
-      <div>
-        <div className="mb-1 flex items-center gap-2">
-          <h3 className="text-sm font-normal text-[#9faed0]">
-            Morten Franken
-          </h3>
-
-          
-        </div>
-        <h1 className="text-[28px] leading-[32px] tracking-[-0.03em] font-extrabold">
-  Halloooo!
-</h1>
+    <article className="profile-page-card" id="profile">
+      <div className="profile-page-card__image" aria-hidden="true">
+        <MotionVideo
+          src="/Profile-1.mp4"
+          active
+          mode="loop"
+          poster="/profil-1.jpg"
+          fallbackImage="/profil-1.jpg"
+          className="profile-page-card__motion"
+          videoClassName="profile-page-card__video"
+        />
       </div>
 
-      <p className="text-[16px] font-normal leading-[1.55] text-[#d7d7d7]">
-        I am a Digital Designer. Since 2020 I’m focusing on interaction design.
-        <br />
-        I’ve gathered experience with facets in design, including UI/UX, Design
-        with AI, generative design and 2, 3D motion design. My goal as an
-        interaction designer is to create a link between a tool and its users. I
-        design this connection that has experiences and stories people can
-        empathize and interact with.
-      </p>
-    </div>
-  );
-}
+      <div className="profile-page-card__body">
+        <p className="profile-page-card__name">Morten Franken</p>
+        <h1 className="profile-page-card__title">Hallooooo!</h1>
 
-function Competencies() {
-  const row1 = ["UX", "UI", "Design System"];
-  const row2 = ["Design with AI", "Motion Design", "3D",];
+        <p className="profile-page-card__copy">
+          I&apos;m Morten, a digital designer focused on interaction and user
+          experience. I believe good design begins with people talking,
+          listening, and learning from one another.
+        </p>
 
-  return (
-    <div className="mt-auto px-1 pb-1">
-      <h2 className="mb-3 text-base font-medium text-white">
-        My competencies
-      </h2>
-
-      <div className="flex flex-col gap-2">
-        <div className="flex flex-wrap gap-2">
-          {row1.map((competency) => (
-            <CompetencyPill key={competency}>{competency}</CompetencyPill>
-          ))}
-        </div>
-
-        <div className="flex flex-wrap gap-2">
-          {row2.map((competency) => (
-            <CompetencyPill key={competency}>{competency}</CompetencyPill>
-          ))}
+        <div className="profile-page-card__competencies">
+          <h2>My competencies</h2>
+          <div className="profile-page-card__pills">
+            {competencies.map((competency) => (
+              <span key={competency.name} className="profile-competency-pill">
+                <img src={`/icons/${competency.icon}.svg`} alt="" aria-hidden="true" />
+                {competency.name}
+              </span>
+            ))}
+          </div>
         </div>
       </div>
-    </div>
-  );
-}
-
-function CompetencyPill({ children }: { children: React.ReactNode }) {
-  return (
-    <span className="w-fit rounded-full bg-[#343434] px-3 py-2 text-sm font-normal leading-none text-[#eeeeee]">
-      {children}
-    </span>
+    </article>
   );
 }

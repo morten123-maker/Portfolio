@@ -5,7 +5,7 @@ date: "Jan 25, 2026"
 readTime: "5 min read"
 image: "/blogs/ego-death.jpeg"
 slug: "ego-death"
-author: "Luan Nguyen"
+author: "Morten Franken"
 tags: ["Reflection"]
 category: "Career Experience"
 excerpt: "Our ego is the drug. It feeds on proximity, on seeing what others have and asking why you do not. To move forward, you must experience ego death—not as something dramatic, but as a small surrender repeated."

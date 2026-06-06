@@ -5,7 +5,7 @@ date: "Feb 5, 2026"
 readTime: "5 min read"
 image: "/blogs/orange.jpeg"
 slug: "be-intentional"
-author: "Luan Nguyen"
+author: "Morten Franken"
 tags: ["Reflection"]
 category: "Life Experience"
 excerpt: "Sometimes the most intentional thing you can do is pause and let the noise settle long enough to hear what's underneath. A night on an airport floor taught me that movement only matters when you've chosen the direction."

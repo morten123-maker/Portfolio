@@ -5,7 +5,7 @@ date: "Jan 30, 2026"
 readTime: "14 min read"
 image: "/blogs/openai-townhall.jpeg"
 slug: "openai-townhall"
-author: "Luan Nguyen"
+author: "Morten Franken"
 tags:
   [
     "OpenAI",

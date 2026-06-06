@@ -1,49 +1,70 @@
 "use client";
 
-
 import Image from "next/image";
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 
-const images = ["/profil-1.jpg", "/profil-2.jpg", "/profil-3.jpg"];
+const profileImages = [
+  "/profil-1.jpg",
+  "/profil-2-auto.jpg",
+  "/profil-3.jpg",
 
-export default function ProfileImage() {
-  const [index, setIndex] = useState(0);
+];
+
+type ProfileImageProps = {
+  className?: string;
+  frameClassName?: string;
+  sizes?: string;
+};
+
+export default function ProfileImage({
+  className = "",
+  frameClassName = "",
+  sizes = "(max-width: 1079px) 100vw, 440px",
+}: ProfileImageProps) {
+  const [imageIndex, setImageIndex] = useState(0);
+
   useEffect(() => {
-  const interval = setInterval(() => {
-    setIndex((prev) => (prev + 1) % images.length);
-  }, 10000);
+    const interval = window.setInterval(() => {
+      setImageIndex((prev) => (prev + 1) % profileImages.length);
+    }, 7000);
 
-  return () => clearInterval(interval);
-}, [index]);
-  
+    return () => window.clearInterval(interval);
+  }, []);
 
   return (
-  <div className="flex shrink-0 flex-col">
-    <div className="relative h-[260px] w-full overflow-hidden rounded-xl bg-[#303030]">
-      <Image
-        src={images[index]}
-        alt="Morten Franken"
-        fill
-        priority
-        className="z-0 object-cover"
-      />
+    <div className={["profile-image-slider", className].filter(Boolean).join(" ")}>
+      <div
+        className={["profile-image-slider__frame", frameClassName]
+          .filter(Boolean)
+          .join(" ")}
+      >
+        <Image
+          key={profileImages[imageIndex]}
+          src={profileImages[imageIndex]}
+          alt="Morten Franken"
+          fill
+          priority={imageIndex === 0}
+          sizes={sizes}
+          className="profile-image-slider__image"
+        />
 
-      <div className="absolute bottom-2 left-1/2 z-10 flex -translate-x-1/2 gap-1.5">
-        {images.map((_, i) => (
-          <button
-            key={i}
-            type="button"
-            onClick={() => setIndex(i)}
-            aria-label={`Show profile image ${i + 1}`}
-            className={`h-2 w-2 rounded-full border transition-all backdrop-blur-md ${
-              i === index
-                ? "border-white bg-white"
-                : "border-white/40 bg-white/30 hover:bg-white/60"
-            }`}
-          />
-        ))}
+        <div className="profile-image-slider__dots" aria-label="Profilbilder wählen">
+          {profileImages.map((_, index) => (
+            <button
+              key={index}
+              type="button"
+              onClick={() => setImageIndex(index)}
+              aria-label={`Profilbild ${index + 1} anzeigen`}
+              className={[
+                "profile-image-slider__dot",
+                index === imageIndex ? "profile-image-slider__dot--active" : "",
+              ]
+                .filter(Boolean)
+                .join(" ")}
+            />
+          ))}
+        </div>
       </div>
     </div>
-  </div>
-);
+  );
 }

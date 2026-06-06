@@ -29,22 +29,29 @@ const avenir = localFont({
     },
     {
       path: "./fonts/AvenirNextCyr-Heavy.woff",
-      weight: "800",
+      weight: "900",
       style: "normal",
     },
   ],
   variable: "--font-avenir",
 });
 
-<html lang="de" className={avenir.variable}></html>
+const siteUrl = "https://mortenfranken.de";
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://luannguyen.net"),
+  metadataBase: new URL(siteUrl),
   title: "Morten Franken",
-  description: "Software Engineer",
-  keywords: ["Luan Nguyen", "Software Engineer", "AI/ML", "Cloud Computing"],
-  creator: "Luan Nguyen",
-  authors: [{ name: "Luan Nguyen" }],
+  description: "UX/UI & Digital Designer – Interaction and user experience.",
+  keywords: [
+    "Morten Franken",
+    "UX/UI Designer",
+    "Digital Designer",
+    "Interaction Design",
+    "Design System",
+    "Portfolio",
+  ],
+  creator: "Morten Franken",
+  authors: [{ name: "Morten Franken" }],
   icons: {
     icon: [{ url: "/gradient.jpeg", type: "image/jpeg" }],
     shortcut: "/gradient.jpeg",
@@ -52,24 +59,24 @@ export const metadata: Metadata = {
   },
   openGraph: {
     type: "website",
-    locale: "en_US",
-    url: "https://luannguyen.net",
+    locale: "de_DE",
+    url: siteUrl,
     title: "Morten Franken",
-    description: "Software Engineer",
-    siteName: "Luan Nguyen's Portfolio",
+    description: "UX/UI & Digital Designer – Interaction and user experience.",
+    siteName: "Morten Franken – Portfolio",
     images: [
       {
         url: "/portfolio_highres.png",
         width: 1920,
         height: 1440,
-        alt: "Morten Portfolio",
+        alt: "Morten Franken Portfolio",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
     title: "Morten Franken",
-    description: "Digital Designer",
+    description: "UX/UI & Digital Designer",
     images: ["/portfolio_highres.png"],
   },
   robots: {
@@ -84,10 +91,7 @@ export const metadata: Metadata = {
     },
   },
   alternates: {
-    canonical: "https://luannguyen.net",
-  },
-  verification: {
-    google: "",
+    canonical: siteUrl,
   },
 };
 
@@ -97,7 +101,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="de" className={avenir.variable}>
       <head>
         {/* Structured data for rich Google search results */}
         <script
@@ -106,26 +110,20 @@ export default function RootLayout({
             __html: JSON.stringify({
               "@context": "https://schema.org",
               "@type": "Person",
-              name: "Luan Nguyen",
-              url: "https://luannguyen.net",
-              image: "https://luannguyen.net/portfolio_highres.png",
-              sameAs: [
-                "https://www.linkedin.com/in/luanthiennguyen",
-                "https://github.com/LuaanNguyen",
-              ],
-              jobTitle: "Software Engineer Intern",
+              name: "Morten Franken",
+              url: siteUrl,
+              image: `${siteUrl}/portfolio_highres.png`,
+              jobTitle: "UX/UI Designer",
               worksFor: {
                 "@type": "Organization",
-                name: "FOX Corporation",
+                name: "MINTvernetzt (Matrix gGmbH)",
               },
-              description: "Software Engineer",
+              description: "UX/UI & Digital Designer",
             }),
           }}
         />
       </head>
       <body className={avenir.className}>
-        <header>
-        </header>
         {children}
         <Analytics />
         <SpeedInsights />

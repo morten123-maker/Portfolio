@@ -5,7 +5,7 @@ date: "Jan 14, 2026"
 readTime: "7 min read"
 image: "/blogs/yosemite.jpg"
 slug: "in-the-absence-of-certainty"
-author: "Luan Nguyen"
+author: "Morten Franken"
 tags: ["Reflection"]
 category: "Career Experience"
 excerpt: "Growing is hard. Putting yourself out into the world often requires you to act as though you already know the answers, as though you are certain and capable and unshaken. This year taught me that growth doesn’t always come from winning. Sometimes it comes from losing things you were certain about: people, outcomes, futures you had already rehearsed in your head."

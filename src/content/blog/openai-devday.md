@@ -5,7 +5,7 @@ date: "Oct 19, 2025"
 readTime: "7 min read"
 image: "/blogs/intro.JPG"
 slug: "openai-devday"
-author: "Luan Nguyen"
+author: "Morten Franken"
 tags:
   [
     "OpenAI",

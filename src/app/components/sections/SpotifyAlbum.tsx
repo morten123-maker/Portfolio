@@ -1,105 +1,171 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
-const tracks = [
-  {
-    title: "Acid Love Story",
-    artist: "MONKYMAN",
-    cover: "/spotify-cover.jpg",
-  },
-  {
-    title: "From Me to You - Mono / Remast",
-    artist: "The Beatles",
-    cover: "/spotify-cover-2.jpg",
-  },
-];
+type Track = {
+  id: string;
+  title: string;
+  artist: string;
+  albumImage: string;
+  spotifyUrl: string;
+  background: string;
+};
+
+function getBackground(trackTitle: string) {
+  const title = trackTitle.toLowerCase();
+
+  if (title.includes("acid love story")) {
+    return "linear-gradient(135deg, #131313 0%, #171717 52%, #111111 100%)";
+  }
+
+  if (title.includes("mare nero")) {
+    return "linear-gradient(135deg, #111815 0%, #132119 100%)";
+  }
+
+  return "linear-gradient(135deg, #171313 0%, #151111 58%, #111111 100%)";
+}
+
+const fallbackTrack: Track = {
+  id: "fallback-acid-love-story",
+  title: "Acid Love Story",
+  artist: "MONKYMAN",
+  albumImage: "/album-fallback.png",
+  spotifyUrl: "https://open.spotify.com/",
+  background: "linear-gradient(135deg, #131313 0%, #171717 52%, #111111 100%)",
+};
+
+function SkipIcon({ direction }: { direction: "previous" | "next" }) {
+  return (
+    <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      {direction === "previous" ? (
+        <>
+          <path d="M7.75 4L3.5 9L7.75 14V4Z" fill="currentColor" />
+          <path d="M14.5 4L10.25 9L14.5 14V4Z" fill="currentColor" />
+        </>
+      ) : (
+        <>
+          <path d="M10.25 4L14.5 9L10.25 14V4Z" fill="currentColor" />
+          <path d="M3.5 4L7.75 9L3.5 14V4Z" fill="currentColor" />
+        </>
+      )}
+    </svg>
+  );
+}
+
+function PlayIcon() {
+  return (
+    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <path d="M4.5 2.7V11.3L11 7L4.5 2.7Z" fill="currentColor" />
+    </svg>
+  );
+}
 
 export default function SpotifyAlbum() {
+  const [tracks, setTracks] = useState<Track[]>([]);
   const [currentTrack, setCurrentTrack] = useState(0);
-  const [isPlaying, setIsPlaying] = useState(false);
 
-  const track = tracks[currentTrack];
+  useEffect(() => {
+    async function loadSpotify() {
+      try {
+        const controller = new AbortController();
+        const timeout = window.setTimeout(() => controller.abort(), 8000);
+
+        const response = await fetch("/api/spotify", {
+          cache: "no-store",
+          signal: controller.signal,
+        });
+
+        window.clearTimeout(timeout);
+
+        if (!response.ok) return;
+
+        const data = await response.json();
+        const spotifyTracks = Array.isArray(data) ? data : data.tracks;
+
+        if (!spotifyTracks || spotifyTracks.length === 0) return;
+
+        const mappedTracks = spotifyTracks.map(
+          (track: Omit<Track, "background">) => ({
+            ...track,
+            background: getBackground(track.title),
+          })
+        );
+
+        setTracks(mappedTracks);
+      } catch {
+        setTracks([]);
+      }
+    }
+
+    loadSpotify();
+  }, []);
+
+  useEffect(() => {
+    setCurrentTrack(0);
+  }, [tracks.length]);
+
+  const visibleTracks = useMemo(() => (tracks.length ? tracks : [fallbackTrack]), [tracks]);
+  const track = visibleTracks[currentTrack] ?? visibleTracks[0] ?? fallbackTrack;
 
   function nextTrack() {
-    setCurrentTrack((prev) => (prev + 1) % tracks.length);
+    setCurrentTrack((prev) => (prev + 1) % visibleTracks.length);
   }
 
   function previousTrack() {
-    setCurrentTrack((prev) =>
-      prev === 0 ? tracks.length - 1 : prev - 1
-    );
+    setCurrentTrack((prev) => (prev === 0 ? visibleTracks.length - 1 : prev - 1));
+  }
+
+  function openSpotify() {
+    window.open(track.spotifyUrl, "_blank", "noopener,noreferrer");
   }
 
   return (
-    <div className="relative flex h-full flex-col justify-between overflow-hidden rounded-[16px] bg-[#405993] px-6 py-5 text-white">
-      {/* SONG INFO */}
-      <div className="flex items-center gap-3">
-        <img
-          src={track.cover}
-          alt={track.title}
-          className="h-12 w-12 rounded-[6px] object-cover"
-        />
+<div className="spotify-compact">
+      <div className="spotify-compact__track">
+        <span className="spotify-compact__cover-wrap">
+          <img
+            src={track.albumImage}
+            alt={track.title}
+            className="spotify-compact__cover"
+            onError={(event) => {
+              event.currentTarget.style.visibility = "hidden";
+            }}
+          />
+          <span className="spotify-compact__fallback-cover" aria-hidden="true" />
+        </span>
 
-        <div className="min-w-0">
-          <h3 className="truncate text-base font-semibold">{track.title}</h3>
-          <p className="truncate text-sm text-white/70">{track.artist}</p>
+        <div className="spotify-compact__copy">
+          <h3>{track.title}</h3>
+          <p>{track.artist}</p>
         </div>
       </div>
 
-      {/* PROGRESS */}
-      <div>
-        <div className="mb-1 h-[3px] w-full rounded-full bg-white/40">
-          <div className="h-full w-[38%] rounded-full bg-white" />
-        </div>
-
-        <div className="flex justify-between text-xs text-white/70">
-          <span>0:38</span>
-          <span>-1:18</span>
-        </div>
-      </div>
-
-      {/* CONTROLS */}
-      <div className="flex items-center justify-center gap-8">
+      <div className="spotify-compact__controls" aria-label="Music controls">
         <button
+          type="button"
           onClick={previousTrack}
-          className="text-2xl transition hover:scale-110 active:scale-95"
+          aria-label="Previous track"
+          className="spotify-compact__skip spotify-compact__skip--previous"
         >
-          ⏮
+          <SkipIcon direction="previous" />
         </button>
 
         <button
-          onClick={() => setIsPlaying((prev) => !prev)}
-          className="flex h-12 w-12 items-center justify-center rounded-full bg-white text-xl text-[#405993] transition hover:scale-105 active:scale-95"
-        >
-          {isPlaying ? "⏸" : "▶"}
-        </button>
-
-        <button
+          type="button"
           onClick={nextTrack}
-          className="text-2xl transition hover:scale-110 active:scale-95"
+          aria-label="Next track"
+          className="spotify-compact__skip spotify-compact__skip--next"
         >
-          ⏭
+          <SkipIcon direction="next" />
         </button>
       </div>
 
-      {/* SPÄTER: WAVEFORM */}
-      {/* WAVEFORM */}
-<div className="absolute bottom-0 left-0 flex h-10 w-full items-end justify-between px-4 opacity-80">
-  {Array.from({ length: 34 }).map((_, index) => (
-    <span
-      key={index}
-      className={`w-[4px] rounded-full bg-green-400 ${
-        isPlaying ? "animate-wave" : ""
-      }`}
-      style={{
-        height: `${10 + ((index * 11) % 30)}px`,
-        animationDelay: `${index * 0.06}s`,
-        animationDuration: `${1.7 + (index % 5) * 0.12}s`,
-      }}
-    />
-  ))}
-</div>
+      <button type="button" className="spotify-compact__open" onClick={openSpotify}>
+        <span className="spotify-compact__open-icon" aria-hidden="true">
+          <PlayIcon />
+        </span>
+        <span>Open in Spotify</span>
+      </button>
     </div>
   );
 }
