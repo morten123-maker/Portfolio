@@ -1,0 +1,340 @@
+/* ════════════════════════════════════════════════════════════
+   MOBILE LAYER — Figma "Mobile" section (node 206:926)
+   Drop-in replacement for the existing `@media (max-width: 720px)`
+   block in globals.css (currently ~lines 1260–1412).
+
+   Pixel reference: 390px artboard · 18px gutters · 354px content
+   · 12px gaps · floating 90px topline · stacked cover cards.
+
+   FLOATING RULES (per Morten):
+   · The "Overview" pill floats ONLY on About-me + single Project.
+   · The Overview page has NO floating footer — Spotify + legal are
+     normal in-flow elements at the end of the scroll.
+
+   Scoped entirely to ≤720px — desktop/tablet rules are untouched.
+   ════════════════════════════════════════════════════════════ */
+
+@media (max-width: 720px) {
+
+  /* ── Tokens (match the 390px artboard) ─────────────────────── */
+  :root {
+    --page-x: 18px;
+    --page-top: 18px;
+    --page-bottom: 18px;
+    --gap: 12px;
+    --header-height: 90px;     /* ← floating topline, fixed height */
+    --header-gap: 12px;
+    --mobile-topline-clear: calc(var(--page-top) + var(--header-height) + var(--header-gap));
+    --mobile-float-clear: 78px; /* room under content for the floating Overview pill */
+  }
+
+  .portfolio-shell { height: 100dvh; }
+
+  /* ════════════════════════════════════════════════════════════
+     1 · FLOATING + STICKY TOPLINE (90px)
+     Lifted out of flow, pinned to top as a translucent glass pill.
+     Content scrolls under it; scroll regions pad themselves clear.
+     ════════════════════════════════════════════════════════════ */
+  .site-topline {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 30;
+    height: var(--header-height);
+    padding: var(--page-top) var(--page-x) 0;
+    pointer-events: none;
+  }
+
+  .site-brand {
+    pointer-events: auto;
+    box-sizing: border-box;
+    display: flex;
+    width: 100%;
+    height: var(--header-height);
+    align-items: flex-start;
+    padding: 6px 0 0;
+    overflow: hidden;
+    white-space: normal;
+    font-size: 24px;
+    line-height: 30px;
+    letter-spacing: -0.72px;        /* = -0.03em @ 24px, per Figma */
+    -webkit-mask-image: linear-gradient(180deg, #000 78%, transparent 100%);
+            mask-image: linear-gradient(180deg, #000 78%, transparent 100%);
+  }
+
+  .site-brand strong { color: var(--white); font-weight: 700; }
+  .site-brand span   { color: #cdcdcd;     font-weight: 500; }
+
+  .portfolio-viewport { margin-top: 0; padding: 0 var(--page-x); }
+
+  /* ════════════════════════════════════════════════════════════
+     2 · OVERVIEW — single scrollable column of cover cards
+     No floating footer here: Spotify + legal scroll in via
+     <MobileFooter/>. So only the topline clearance up top.
+     ════════════════════════════════════════════════════════════ */
+  .projects-section--overview {
+    height: 100%;
+    overflow-y: auto;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
+    padding: var(--mobile-topline-clear) 0 var(--page-bottom);
+  }
+
+  .overview-layout {
+    display: flex;
+    flex-direction: column;
+    gap: var(--gap);
+    height: auto;
+    min-height: 100%;
+  }
+
+  /* Flatten desktop's nested rows/stack into one column */
+  .overview-row,
+  .overview-row--top,
+  .overview-row--bottom,
+  .overview-stack { display: contents; }
+
+  /* Reading order: About first, then projects newest→oldest */
+  .project-card--about        { order: 1; }
+  .project-card--mint         { order: 2; }
+  .project-card--workshop     { order: 3; }
+  .project-card--installation { order: 4; }
+  .project-card--ar           { order: 5; }
+  .project-card--ai           { order: 6; }
+
+  /* Card heights straight from the artboard */
+  .overview-layout .project-card {
+    flex: 0 0 auto;
+    width: 100%;
+    height: 270px;
+    aspect-ratio: auto;
+    border-radius: var(--card-radius);
+  }
+  .overview-layout .project-card--about { height: 198px; }
+
+  /* Content block: 30px inset, eyebrow over title, bottom-aligned */
+  .project-card__content { left: 30px; right: 30px; bottom: 30px; gap: 0; }
+
+  /* Tags ~48px above the title, always visible (no hover on touch) */
+  .project-card__tags {
+    position: absolute;
+    left: 30px;
+    right: 30px;
+    bottom: 78px;
+    margin: 0;
+    opacity: 1;
+    transform: none;
+  }
+  .project-card--about .project-card__tags { display: none; }
+
+  .project-tag {
+    height: 36px;
+    padding: 6px 12px;
+    font-size: 14px;
+    background: rgba(36, 36, 36, 0.92);
+  }
+
+  .project-card__eyebrow { margin-bottom: 6px; font-size: 14px; line-height: 16px; color: var(--muted); }
+  .project-card__title   { font-size: 24px; line-height: 30px; font-weight: 700; }
+
+  .project-card--about .project-card__verified { opacity: 1; transform: none; }
+
+  /* ── In-flow footer (Spotify + legal) — overview & profile ──
+     Sits at the END of the scroll column. Needs <MobileFooter/>. */
+  .mobile-footer {
+    order: 99;
+    display: flex;
+    flex-direction: column;
+    gap: var(--gap);
+    margin-top: 6px;
+  }
+  .mobile-footer__legal {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    height: 48px;
+    color: rgba(255, 255, 255, 0.72);
+    font-size: 16px;
+    letter-spacing: -0.48px;
+  }
+  .mobile-footer__legal a { color: inherit; text-decoration: none; }
+  .mobile-footer__legal a:active { color: var(--white); }
+  .mobile-footer__legal span { width: 1px; height: 16px; background: rgba(255, 255, 255, 0.22); }
+
+  /* ════════════════════════════════════════════════════════════
+     3 · PROFILE / "About me" view
+     Floating Overview pill present → reserve bottom space.
+     ════════════════════════════════════════════════════════════ */
+  .profile-view {
+    display: block;
+    height: 100%;
+    overflow-y: auto;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
+    padding: var(--mobile-topline-clear) 0 calc(var(--page-bottom) + var(--mobile-float-clear));
+  }
+
+  .profile-grid {
+    display: flex;
+    flex-direction: column;
+    gap: var(--gap);
+    grid-template-columns: none;
+    grid-template-rows: none;
+  }
+
+  .profile-intro-card,
+  .profile-hover-card,
+  .profile-design-projects { grid-column: auto; grid-row: auto; width: 100%; }
+
+  .profile-intro-card { padding: 0; }
+  .profile-intro-card .profile-image-slider { width: 100%; aspect-ratio: 354 / 282; border-radius: var(--card-radius); }
+  .profile-intro-card__copy { padding: 18px 18px 22px; overflow: visible; max-height: none; }
+  .profile-intro-card__name { font-size: 16px; }
+  .profile-intro-card h1 { font-size: 32px; line-height: 36px; }
+  .profile-intro-card__copy p { font-size: 16px; line-height: 26px; }
+
+  .profile-hover-card { justify-content: flex-start; padding: 18px; min-height: 0; }
+  .profile-hover-card h2 { order: -1; margin: 0 0 18px; font-size: 24px; line-height: 24px; }
+  .profile-hover-card .resume-list {
+    position: static; inset: auto; max-height: none; overflow: visible;
+    padding-right: 0; opacity: 1; transform: none;
+  }
+  .resume-list__scroll-hint { display: none; }
+  .resume-list__row h3 { font-size: 18px; line-height: 24px; }
+  .resume-list__row p  { font-size: 14px; line-height: 16px; }
+
+  .profile-design-projects { min-height: 200px; padding: 0; border-radius: var(--card-radius); }
+  .profile-design-projects__label { position: absolute; left: 36px; right: 36px; bottom: 36px; font-size: 24px; line-height: 24px; }
+
+  /* ════════════════════════════════════════════════════════════
+     4 · FLOATING "Overview" BAR — profile + project only
+     Overview page: bar is fully hidden (no floating footer).
+     ════════════════════════════════════════════════════════════ */
+
+  /* Overview page → kill the bar entirely */
+  .site-bottombar--overview { display: none; }
+
+  /* Profile page → centered floating glass pill, Overview only */
+  .site-bottombar--profile {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 25;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+    padding: 0 var(--page-x) max(var(--page-bottom), env(safe-area-inset-bottom));
+    pointer-events: none;
+    background: linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.55) 58%, var(--page-black) 100%);
+  }
+
+  /* Inner spotify/spacer/legal of the bar are handled by <MobileFooter/> */
+  .site-bottombar__spacer,
+  .site-bottombar__legal,
+  .site-bottombar .spotify-compact { display: none; }
+
+  .site-bottombar__overview {
+    pointer-events: auto;
+    margin: 0;
+    height: 48px;
+    width: 100%;
+    max-width: 354px;
+    justify-content: center;
+    border-radius: var(--card-radius);
+    font-size: 16px;
+    letter-spacing: -0.48px;
+  }
+
+  /* ════════════════════════════════════════════════════════════
+     5 · SPOTIFY CARD — match the artboard exactly
+     Row 1: cover + title/artist  ·······  skip prev / next
+     Row 2: full-width "Open in Spotify" CTA (white play disc)
+     ════════════════════════════════════════════════════════════ */
+  .spotify-compact {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-areas:
+      "track controls"
+      "open  open";
+    align-items: center;
+    row-gap: 18px;
+    column-gap: 12px;
+    width: 100%;
+    height: 126px;
+    padding: 18px;
+    border-radius: var(--card-radius);
+    background: var(--panel);            /* #131313 */
+  }
+
+  .spotify-compact__track { grid-area: track; gap: 12px; min-width: 0; }
+
+  .spotify-compact__cover-wrap,
+  .spotify-compact__cover,
+  .spotify-compact__fallback-cover {
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+  }
+
+  .spotify-compact__copy h3,
+  .spotify-compact__copy p { font-size: 16px; line-height: 16px; letter-spacing: -0.48px; }
+  .spotify-compact__copy h3 { font-weight: 700; color: var(--white); }
+  .spotify-compact__copy p  { font-weight: 500; color: #cdcdcd; }
+
+  .spotify-compact__controls {
+    grid-area: controls;
+    justify-self: end;
+    gap: 16px;
+  }
+  .spotify-compact__skip { width: 24px; height: 24px; color: var(--white); }
+  .spotify-compact__skip svg { width: 18px; height: 18px; }
+
+  /* CTA: full-width translucent button with a white play disc */
+  .spotify-compact__open {
+    grid-area: open;
+    display: flex;
+    width: 100%;
+    height: 36px;
+    gap: 8px;
+    border-radius: var(--small-radius);   /* 6px */
+    background: rgba(52, 52, 52, 0.2);
+    padding: 6px 12px;
+    font-size: 16px;
+    font-weight: 500;
+    letter-spacing: -0.48px;
+  }
+  .spotify-compact__open-icon {
+    width: 24px;
+    height: 24px;
+    border-radius: 999px;
+    background: var(--white);
+    color: var(--panel);                  /* dark play triangle on white disc */
+  }
+
+  /* ════════════════════════════════════════════════════════════
+     6 · SINGLE PROJECT (detail) view
+     ════════════════════════════════════════════════════════════ */
+  .projects-section--detail {
+    height: 100%;
+    overflow-y: auto;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: calc(var(--page-bottom) + var(--mobile-float-clear));
+  }
+  .detail-nav { top: var(--page-top); margin: 0 var(--page-x); }
+
+  .project-case-intro,
+  .project-showcase,
+  .project-showcase--second,
+  .project-story-row,
+  .project-two-images {
+    grid-template-columns: 1fr;
+    gap: 18px;
+    padding-left: 0;
+    padding-right: 0;
+  }
+}

@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import Projects from "./components/sections/Projects";
 import SpotifyAlbum from "./components/sections/SpotifyAlbum";
+import MobileFooter from "./components/sections/MobileFooter";
 
 type ActiveView = "overview" | "profile";
 
@@ -219,13 +220,13 @@ function ProfileIntroCard() {
       <ProfileImageSlider />
       <div className="profile-intro-card__copy">
         <p className="profile-intro-card__name">(He/Him)</p>
-        <h1>Hallo, I’m Morten</h1>
+        <h1>Hallo, I'm Morten</h1>
         <p>
-          I’m a digital designer who believes great experiences start with listening.
+          I'm a digital designer who believes great experiences start with listening.
         </p>
         <p>
           I approach every project by getting close to people – their needs, their frustrations,
-          their everyday realities. Design, for me, isn’t about aesthetics alone. It’s
+          their everyday realities. Design, for me, isn't about aesthetics alone. It's
           about creating spaces where people feel understood, empowered, and free.
         </p>
         <p>
@@ -282,6 +283,8 @@ function ProfileView({ onOverviewClick }: { onOverviewClick: () => void }) {
           ariaLabel="Other Experience"
         />
         <AllDesignProjectsTile onOverviewClick={onOverviewClick} />
+        {/* Mobile-only: Spotify + legal scroll in at the bottom */}
+        <MobileFooter />
       </div>
     </section>
   );

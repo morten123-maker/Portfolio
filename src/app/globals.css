@@ -1257,45 +1257,85 @@ img, video { display: block; }
   }
 }
 
+
+/* Mobile footer — hidden on desktop, shown only in mobile media query */
+.mobile-footer { display: none; }
+
 @media (max-width: 720px) {
+
+  /* ── Tokens ─────────────────────────────────────────────── */
   :root {
-    --page-x: 12px;
+    --page-x: 18px;
     --page-top: 18px;
-    --page-bottom: 12px;
-    --header-gap: 18px;
+    --page-bottom: 18px;
+    --gap: 12px;
+    --header-height: 90px;
+    --header-gap: 12px;
+  }
+
+  .portfolio-shell { height: 100dvh; }
+
+  /* ════════════════════════════════════════════════════════
+     1 · TOPLINE — normal flow element, stays at top
+     Outside the scroll container so it never scrolls away.
+     Solid black bg so it reads cleanly over the dark page.
+     ════════════════════════════════════════════════════════ */
+  .site-topline {
+    position: static;             /* back to normal flow */
+    flex-shrink: 0;
+    height: var(--header-height);
+    padding: var(--page-top) var(--page-x) 0;
+    background: var(--page-black);
   }
 
   .site-brand {
+    box-sizing: border-box;
+    display: flex;
     width: 100%;
+    height: var(--header-height);
+    align-items: flex-start;
+    padding: 6px 0 0;
+    overflow: hidden;
     white-space: normal;
-    font-size: 22px;
+    font-size: 24px;
     line-height: 30px;
+    letter-spacing: -0.72px;
   }
 
-  /* Overview: scrollable single full-width column */
+  .site-brand strong { color: var(--white); font-weight: 700; }
+  .site-brand span   { color: #cdcdcd; font-weight: 500; }
+
+  /* Viewport takes remaining height normally */
+  .portfolio-viewport {
+    margin-top: var(--header-gap);
+    padding: 0 var(--page-x);
+  }
+
+  /* ════════════════════════════════════════════════════════
+     2 · OVERVIEW — scrollable single column, no floating bar
+     ════════════════════════════════════════════════════════ */
   .projects-section--overview {
     height: 100%;
     overflow-y: auto;
     overflow-x: hidden;
     -webkit-overflow-scrolling: touch;
+    padding: 0 0 var(--page-bottom);
   }
 
   .overview-layout {
     display: flex;
     flex-direction: column;
+    gap: var(--gap);
     height: auto;
     min-height: 100%;
   }
 
-  /* Flatten the nested rows/stack so every card is one full-width item */
   .overview-row,
   .overview-row--top,
   .overview-row--bottom,
-  .overview-stack {
-    display: contents;
-  }
+  .overview-stack { display: contents; }
 
-  /* Reading order: About first, Community Design (Design with AI) last */
+  /* Reading order */
   .project-card--about        { order: 1; }
   .project-card--mint         { order: 2; }
   .project-card--workshop     { order: 3; }
@@ -1303,112 +1343,224 @@ img, video { display: block; }
   .project-card--ar           { order: 5; }
   .project-card--ai           { order: 6; }
 
+  /* Card heights from artboard */
   .overview-layout .project-card {
     flex: 0 0 auto;
-    height: auto;
-    aspect-ratio: 5 / 6;
+    width: 100%;
+    height: 270px;
+    aspect-ratio: auto;
+    border-radius: var(--card-radius);
   }
+  .overview-layout .project-card--about { height: 198px; }
 
-  .overview-layout .project-card--about {
-    aspect-ratio: 16 / 10;
-  }
+  /* Content bottom-left, 30px inset */
+  .project-card__content { left: 30px; right: 30px; bottom: 30px; gap: 0; }
 
-  /* No hover on touch — keep tags and the verified badge visible */
+  /* Tags always visible on touch */
   .project-card__tags {
-    opacity: 1;
-    transform: none;
+    position: absolute;
+    left: 30px; right: 30px; bottom: 78px;
+    margin: 0; opacity: 1; transform: none;
   }
+  .project-card--about .project-card__tags { display: none; }
+  .project-card--about .project-card__verified { opacity: 1; transform: none; }
 
-  .project-card--about .project-card__verified {
-    opacity: 1;
-    transform: none;
+  .project-tag { height: 36px; padding: 6px 12px; font-size: 14px; background: rgba(36, 36, 36, 0.92); }
+  .project-card__eyebrow { margin-bottom: 6px; font-size: 14px; line-height: 16px; }
+  .project-card__title   { font-size: 24px; line-height: 30px; font-weight: 700; }
+
+  /* ── In-flow footer (Spotify + legal) ───────────────────── */
+  .mobile-footer {
+    display: flex;
+    flex-direction: column;
+    order: 99;
+    gap: var(--gap);
+    margin-top: 6px;
   }
+  .mobile-footer__legal {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    height: 48px;
+    color: rgba(255, 255, 255, 0.72);
+    font-size: 16px;
+    letter-spacing: -0.48px;
+  }
+  .mobile-footer__legal a { color: inherit; text-decoration: none; }
+  .mobile-footer__legal a:active { color: var(--white); }
+  .mobile-footer__legal span { display: block; width: 1px; height: 16px; background: rgba(255, 255, 255, 0.22); }
 
-  /* Profile: scrollable single full-width column */
+  /* ════════════════════════════════════════════════════════
+     3 · PROFILE / About me
+     Extra bottom padding so the floating pill doesn't cover
+     the last bit of scroll content.
+     ════════════════════════════════════════════════════════ */
   .profile-view {
     display: block;
     height: 100%;
     overflow-y: auto;
     overflow-x: hidden;
     -webkit-overflow-scrolling: touch;
+    padding: 0 0 calc(var(--page-bottom) + 72px);
   }
 
   .profile-grid {
     display: flex;
     flex-direction: column;
+    gap: var(--gap);
     grid-template-columns: none;
     grid-template-rows: none;
   }
 
   .profile-intro-card,
-  .profile-design-projects {
-    grid-column: auto;
-    grid-row: auto;
-  }
+  .profile-hover-card,
+  .profile-design-projects { grid-column: auto; grid-row: auto; width: 100%; }
 
-  .profile-intro-card {
-    padding: 0;
-  }
+  .profile-intro-card { padding: 0; }
+  .profile-intro-card .profile-image-slider { width: 100%; aspect-ratio: 354 / 282; border-radius: var(--card-radius); }
+  .profile-intro-card__copy { padding: 18px 18px 22px; overflow: visible; max-height: none; }
+  .profile-intro-card__name { font-size: 16px; }
+  .profile-intro-card h1 { font-size: 32px; line-height: 36px; }
+  .profile-intro-card__copy p { font-size: 16px; line-height: 26px; }
 
-  .profile-intro-card__copy {
-    padding: 16px 18px 22px;
-  }
+  .profile-hover-card { justify-content: flex-start; padding: 18px; min-height: 0; }
+  .profile-hover-card h2 { order: -1; margin: 0 0 18px; font-size: 24px; line-height: 24px; }
+  .profile-hover-card .resume-list { position: static; inset: auto; max-height: none; overflow: visible; padding-right: 0; opacity: 1; transform: none; }
+  .resume-list__scroll-hint { display: none; }
+  .resume-list__row h3 { font-size: 18px; line-height: 24px; }
+  .resume-list__row p  { font-size: 14px; line-height: 16px; }
 
-  .profile-design-projects {
-    padding: 28px 0 28px 24px;
-    min-height: 120px;
-  }
+  .profile-design-projects { min-height: 200px; padding: 0; border-radius: var(--card-radius); }
+  .profile-design-projects__label { position: absolute; left: 36px; right: 36px; bottom: 36px; font-size: 24px; line-height: 24px; }
 
-  /* Resume cards: static (no hover reveal), title on top, full list visible */
-  .profile-hover-card {
-    justify-content: flex-start;
-    padding: 24px;
-    min-height: 0;
-  }
+  /* ════════════════════════════════════════════════════════
+     4 · FLOATING OVERVIEW BAR
+     — Overview page  : completely hidden
+     — Profile page   : solid pill anchored to bottom of shell
+     ════════════════════════════════════════════════════════ */
+  .site-bottombar--overview { display: none; }
 
-  .profile-hover-card h2 {
-    order: -1;
-    margin: 0 0 18px;
-  }
-
-  .profile-hover-card .resume-list {
-    position: static;
-    left: auto;
-    right: auto;
-    top: auto;
-    max-height: none;
-    overflow: visible;
-    padding-right: 0;
-    opacity: 1;
-    transform: none;
-  }
-
-  .resume-list__scroll-hint {
-    display: none;
-  }
-
-  .site-bottombar {
-    flex-wrap: wrap;
-    gap: 12px;
-  }
-
-  .site-bottombar__spacer { display: none; }
-  .site-bottombar .spotify-compact { flex: 1 1 100%; }
-  .site-bottombar__legal { order: 2; }
-  .site-bottombar__overview { order: 3; }
-
-  .project-switcher {
-    flex-wrap: wrap;
+  .site-bottombar--profile {
+    /* Removed from flex flow, anchored to bottom of the shell */
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    z-index: 25;
+    display: flex;
     justify-content: center;
-    max-width: calc(100vw - 24px);
+    align-items: center;
+    /* 18px from screen edges, 18px from bottom (safe area aware) */
+    padding: 0 var(--page-x) max(var(--page-bottom), env(safe-area-inset-bottom));
+    height: calc(48px + var(--page-bottom) + max(0px, env(safe-area-inset-bottom)));
+    pointer-events: none;
   }
 
+  /* Hide desktop-only elements inside the bar */
+  .site-bottombar__spacer,
+  .site-bottombar__legal,
+  .site-bottombar .spotify-compact { display: none; }
+
+  /* The pill — solid #131313, radius 6px, per Figma design context */
+  .site-bottombar__overview {
+    pointer-events: auto;
+    margin: 0;
+    width: 100%;
+    max-width: 354px;
+    height: 48px;
+    justify-content: center;
+    border-radius: var(--small-radius);       /* 6px */
+    background: #131313;
+    -webkit-backdrop-filter: none;
+            backdrop-filter: none;
+    font-size: 16px;
+    letter-spacing: -0.48px;
+  }
+
+  .site-bottombar__overview:hover,
+  .site-bottombar__overview.is-active {
+    background: #1c1c1c;
+  }
+
+  /* ════════════════════════════════════════════════════════
+     5 · SPOTIFY CARD
+     354 × 126, two-row grid: [track + controls] / [open CTA]
+     ════════════════════════════════════════════════════════ */
   .spotify-compact {
-    height: 72px;
+    display: grid;
     grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-areas:
+      "track controls"
+      "open  open";
+    align-items: center;
+    row-gap: 18px;
+    column-gap: 12px;
+    width: 100%;
+    height: 126px;
+    padding: 18px;
+    border-radius: var(--card-radius);
+    background: var(--panel);
   }
 
-  .spotify-compact__open { display: none; }
+  .spotify-compact__track    { grid-area: track; gap: 12px; min-width: 0; }
+  .spotify-compact__controls { grid-area: controls; justify-self: end; gap: 16px; }
+  .spotify-compact__open {
+    grid-area: open;
+    display: flex;
+    width: 100%;
+    height: 36px;
+    gap: 8px;
+    border-radius: var(--small-radius);
+    background: rgba(52, 52, 52, 0.2);
+    padding: 6px 12px;
+    font-size: 16px;
+    font-weight: 500;
+    letter-spacing: -0.48px;
+  }
+
+  .spotify-compact__cover-wrap,
+  .spotify-compact__cover,
+  .spotify-compact__fallback-cover { width: 36px; height: 36px; border-radius: 8px; }
+
+  .spotify-compact__copy h3,
+  .spotify-compact__copy p { font-size: 16px; line-height: 16px; letter-spacing: -0.48px; }
+  .spotify-compact__copy h3 { font-weight: 700; color: var(--white); }
+  .spotify-compact__copy p  { font-weight: 500; color: #cdcdcd; }
+
+  .spotify-compact__skip { width: 24px; height: 24px; color: var(--white); }
+  .spotify-compact__skip svg { width: 18px; height: 18px; }
+
+  /* White circle play disc */
+  .spotify-compact__open-icon {
+    width: 24px; height: 24px;
+    border-radius: 999px;
+    background: var(--white);
+    color: var(--panel);
+  }
+
+  /* ════════════════════════════════════════════════════════
+     6 · SINGLE PROJECT DETAIL
+     ════════════════════════════════════════════════════════ */
+  .projects-section--detail {
+    height: 100%;
+    overflow-y: auto;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .project-intro-v2 { padding: 24px 18px 36px; }
+  .project-intro-v2__title { font-size: 26px; }
+  .project-intro-v2__grid { grid-template-columns: 1fr; gap: 24px; }
+  .project-showcase-v2,
+  .project-showcase-v2--reverse { grid-template-columns: 1fr; padding: 24px 18px; gap: 18px; }
+  .project-story-row,
+  .project-story-row--reverse { grid-template-columns: 1fr; padding: 24px 18px; gap: 18px; }
+  .project-wide-image,
+  .project-two-images { padding-left: 18px; padding-right: 18px; }
+  .project-two-images { grid-template-columns: 1fr; }
+  .more-projects { padding: 30px 18px 48px; }
+  .more-projects__grid { grid-template-columns: 1fr; }
+  .project-page-footer { grid-template-columns: 1fr; padding: 12px 18px 18px; }
+  .project-page-footer .spotify-compact { height: 126px; }
 }
 
 /* ══════════════════════════════════════════════════════════

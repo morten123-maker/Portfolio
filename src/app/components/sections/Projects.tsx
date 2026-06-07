@@ -3,6 +3,7 @@
 import { CSSProperties, useMemo, useState } from "react";
 import MotionVideo from "./MotionVideo";
 import SpotifyAlbum from "./SpotifyAlbum";
+import MobileFooter from "./MobileFooter";
 import {
   portfolioProjects,
   type PortfolioProject,
@@ -111,8 +112,6 @@ function DetailNav({
   onOverview: () => void;
 }) {
   const total = projects.length;
-  // Cyclic navigation — wraps around at both ends
-  // (last → next → first, first → previous → last).
   const prevIndex = (activeIndex - 1 + total) % total;
   const nextIndex = (activeIndex + 1) % total;
 
@@ -149,8 +148,6 @@ function DetailNav({
 
 /* ── More projects ───────────────────────────────────────── */
 function MoreProjects({ projects, activeIndex, onSelect, onOverview }: { projects: PortfolioProject[]; activeIndex: number; onSelect: (i: number) => void; onOverview: () => void; }) {
-  // Show the projects that follow the current one in cyclic order — this
-  // mirrors the "Next Project" flow and never repeats the active project.
   const total = projects.length;
   const count = Math.min(3, total - 1);
   const others = Array.from({ length: count }, (_, step) => {
@@ -187,7 +184,6 @@ function MoreProjects({ projects, activeIndex, onSelect, onOverview }: { project
     </section>
   );
 }
-
 
 function ProjectPageFooter({ onOverview }: { onOverview: () => void }) {
   return (
@@ -275,11 +271,7 @@ function DefaultProjectDetail({ project, projects, activeIndex, onSelect, onOver
   );
 }
 
-/* ══════════════════════════════════════════════════════════
-   INTERACTIVE INSTALLATION — custom layout
-   ══════════════════════════════════════════════════════════ */
-
-
+/* ── Interactive Installation ────────────────────────────── */
 function InstallationDetail({ project, projects, activeIndex, onSelect, onOverview }: { project: PortfolioProject; projects: PortfolioProject[]; activeIndex: number; onSelect: (i: number) => void; onOverview: () => void; }) {
   const fb = project.fallbackGraphic;
   const paragraphs = project.description.split("\n\n").filter(Boolean);
@@ -349,6 +341,7 @@ function InstallationDetail({ project, projects, activeIndex, onSelect, onOvervi
   );
 }
 
+/* ── Globetrotter ────────────────────────────────────────── */
 function GlobetrotterDetail({ project, projects, activeIndex, onSelect, onOverview }: { project: PortfolioProject; projects: PortfolioProject[]; activeIndex: number; onSelect: (i: number) => void; onOverview: () => void; }) {
   const fb = project.fallbackGraphic;
   const paragraphs = project.description.split("\n\n").filter(Boolean);
@@ -521,6 +514,8 @@ export default function Projects({ activeProjectIndex, onProjectSelect, onBackTo
             <ProjectCard project={ar} index={4} onOpen={() => onProjectSelect(4)} />
           </div>
         </div>
+        {/* Mobile-only: Spotify + legal scroll in below the cards */}
+        <MobileFooter />
       </div>
     </section>
   );
