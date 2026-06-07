@@ -13,21 +13,49 @@ type ResumeRow = {
 };
 
 const designExperienceRows: ResumeRow[] = [
-  { title: "UX/UI working student", meta: "3 years • MINTvernetzt at Matrix gGmbH" },
-  { title: "Internship at Curious Company", meta: "1/2 years • working student at MINTvernetzt" },
-  { title: "UX/UI working student", meta: "1 year • working student at Schüco" },
-  { title: "Bachelor of Arts, coming soon", meta: "Digital Media and Experiment" },
-  { title: "Design System Practice", meta: "Components • documentation • UI patterns" },
-  { title: "Design Workshop Facilitation", meta: "Kids workshops • UX basics • playful prototyping" },
+  {
+    title: "UX/UI Designer at Matrix gGmbH",
+    meta: "2023 – now • Project MINTvernetzt",
+  },
+  {
+    title: "Digital Media and Experiment",
+    meta: "2019 – now • Studies at HSBI",
+  },
+  {
+    title: "Internship at Curious Company GmbH",
+    meta: "2022 – 2023 • Hamburg",
+  },
+  {
+    title: "UX/UI Designer at Schüco",
+    meta: "2021",
+  },
 ];
 
 const otherExperienceRows: ResumeRow[] = [
-  { title: "Workshop Instructor", meta: "Figma • UX basics • creative learning" },
-  { title: "Facilitation", meta: "User tests • interviews • team workshops" },
-  { title: "Freelance Visual Work", meta: "Motion • 3D • generative experiments" },
-  { title: "Research and Concept", meta: "Human-centered design • interaction flows" },
-  { title: "Community Projects", meta: "Digital products for education and culture" },
-  { title: "Interactive Prototyping", meta: "Figma • design systems • front-end handoff" },
+  {
+    title: "Production Assistant at WDR",
+    meta: "2021 – 2022",
+  },
+  {
+    title: "Travelling and jobbing",
+    meta: "2015 – 2018 • Europe, America, Asia",
+  },
+  {
+    title: "Teamer in a surfcamp",
+    meta: "2017 – 2020 • France",
+  },
+  {
+    title: "Many minijobs",
+    meta: "2015 – 2020",
+  },
+  {
+    title: "Volunteering in a meditation center",
+    meta: "2018 • Collaboration",
+  },
+  {
+    title: "Crossing the Atlantic",
+    meta: "2018 • Sailing boat",
+  },
 ];
 
 const profileSliderImages = ["/profil-1.jpg", "/profil-2-auto.jpg", "/profil-3.jpg", "/profil-4.JPG"];
