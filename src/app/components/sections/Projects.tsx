@@ -435,15 +435,6 @@ function ProjectCard({ project, index, onOpen }: { project: PortfolioProject; in
       style={{ "--card-index": index } as CSSProperties}
       aria-label={`${project.detailTitle} öffnen`}
     >
-      {project.hoverImage ? (
-        <span className="project-card__media project-card__hover-media" aria-hidden="true">
-          <img src={project.hoverImage} alt="" className="project-card__hover-image" draggable={false} />
-        </span>
-      ) : (
-        <span className="project-card__media" aria-hidden="true">
-          <MotionVideo src={project.videoSrc} active={motionActive} className="project-card__motion" videoClassName={["project-card__motion-video", project.motionClassName].filter(Boolean).join(" ")} speed={1} />
-        </span>
-      )}
       <span className="project-card__overlay">
         <span className="project-card__shade" />
         <span className="project-card__content">
@@ -461,7 +452,7 @@ function AboutCard({ onOpen }: { onOpen: () => void }) {
     <button type="button" onClick={onOpen} className="project-card project-card--about is-motion-visible" aria-label="About me öffnen">
       <span className="project-card__about-media" aria-hidden="true">
         <img className="project-card__about-ocean-poster" src="/ocean-poster.jpg" alt="" />
-        <MotionVideo src="/oceanvid.MP4" active mode="loop" poster="/ocean-poster.jpg" fallbackImage="/ocean-poster.jpg" className="project-card__about-ocean" videoClassName="project-card__about-ocean-video" />
+        <MotionVideo src="/oceanvid.mp4" active mode="loop" poster="/ocean-poster.jpg" fallbackImage="/ocean-poster.jpg" className="project-card__about-ocean" videoClassName="project-card__about-ocean-video" />
         <img className="project-card__about-photo" src="/profil-2-auto.jpg" alt="" />
         <span className="project-card__about-gradient" />
       </span>

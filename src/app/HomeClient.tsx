@@ -29,7 +29,7 @@ const otherExperienceRows: ResumeRow[] = [
   { title: "Interactive Prototyping", meta: "Figma • design systems • front-end handoff" },
 ];
 
-const profileSliderImages = ["/profil-1.jpg", "/profil-2-auto.jpg", "/profil-3.jpg"];
+const profileSliderImages = ["/profil-1.jpg", "/profil-2-auto.jpg", "/profil-3.jpg", "/profil-4.JPG"];
 
 const taglines = [
   "I believe good design belongs to everyone.",
@@ -228,7 +228,11 @@ function ProfileIntroCard() {
           their everyday realities. Design, for me, isn’t about aesthetics alone. It’s
           about creating spaces where people feel understood, empowered, and free.
         </p>
-        <p>I work best in collaboration: thinking together, building together, questioning together. I take on projects I believe in – ones that connect communities, remove barriers, and leave something useful behind.</p>
+        <p>
+          I work best in collaboration: thinking together, building together, questioning together.
+          I take on projects I believe in – ones that connect communities, remove barriers, and
+          leave something useful behind.
+        </p>
       </div>
     </article>
   );
