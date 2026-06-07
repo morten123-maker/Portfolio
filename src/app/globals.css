@@ -1272,50 +1272,119 @@ img, video { display: block; }
     line-height: 30px;
   }
 
-  .overview-row--top {
-    grid-template-columns: 1fr 1fr;
+  /* Overview: scrollable single full-width column */
+  .projects-section--overview {
+    height: 100%;
+    overflow-y: auto;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
   }
 
-  .overview-row--bottom {
-    grid-template-columns: 0.45fr 0.55fr;
+  .overview-layout {
+    display: flex;
+    flex-direction: column;
+    height: auto;
+    min-height: 100%;
   }
 
+  /* Flatten the nested rows/stack so every card is one full-width item */
+  .overview-row,
+  .overview-row--top,
+  .overview-row--bottom,
   .overview-stack {
-    grid-column: 1 / span 2;
-    grid-row: 2;
-    grid-template-columns: 1fr 1fr;
-    grid-template-rows: 1fr;
+    display: contents;
+  }
+
+  /* Reading order: About first, Community Design (Design with AI) last */
+  .project-card--about        { order: 1; }
+  .project-card--mint         { order: 2; }
+  .project-card--workshop     { order: 3; }
+  .project-card--installation { order: 4; }
+  .project-card--ar           { order: 5; }
+  .project-card--ai           { order: 6; }
+
+  .overview-layout .project-card {
+    flex: 0 0 auto;
+    height: auto;
+    aspect-ratio: 5 / 6;
+  }
+
+  .overview-layout .project-card--about {
+    aspect-ratio: 16 / 10;
+  }
+
+  /* No hover on touch — keep tags and the verified badge visible */
+  .project-card__tags {
+    opacity: 1;
+    transform: none;
+  }
+
+  .project-card--about .project-card__verified {
+    opacity: 1;
+    transform: none;
+  }
+
+  /* Profile: scrollable single full-width column */
+  .profile-view {
+    display: block;
+    height: 100%;
+    overflow-y: auto;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
   }
 
   .profile-grid {
-    grid-template-columns: 1fr 1fr;
-    grid-template-rows: minmax(0, 1.2fr) minmax(0, 0.82fr) minmax(0, 0.82fr);
+    display: flex;
+    flex-direction: column;
+    grid-template-columns: none;
+    grid-template-rows: none;
+  }
+
+  .profile-intro-card,
+  .profile-design-projects {
+    grid-column: auto;
+    grid-row: auto;
   }
 
   .profile-intro-card {
-    grid-column: 1 / span 2;
-    grid-row: 1;
-    padding: 18px;
+    padding: 0;
   }
 
   .profile-intro-card__copy {
-    padding: 16px 18px 18px;
+    padding: 16px 18px 22px;
   }
 
   .profile-design-projects {
-    grid-column: 1 / span 2;
-    grid-row: 3;
-    padding: 0 0 24px 24px;
+    padding: 28px 0 28px 24px;
+    min-height: 120px;
   }
 
+  /* Resume cards: static (no hover reveal), title on top, full list visible */
   .profile-hover-card {
+    justify-content: flex-start;
     padding: 24px;
+    min-height: 0;
+  }
+
+  .profile-hover-card h2 {
+    order: -1;
+    margin: 0 0 18px;
   }
 
   .profile-hover-card .resume-list {
-    left: 24px;
-    right: 18px;
-    top: 18px;
+    position: static;
+    left: auto;
+    right: auto;
+    top: auto;
+    max-height: none;
+    overflow: visible;
+    padding-right: 0;
+    opacity: 1;
+    transform: none;
+  }
+
+  .resume-list__scroll-hint {
+    display: none;
   }
 
   .site-bottombar {
