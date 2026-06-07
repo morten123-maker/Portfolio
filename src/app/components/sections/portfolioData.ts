@@ -23,6 +23,7 @@ export type PortfolioProject = {
   imageAlt: string;
   tags: ProjectTag[];
   className: string;
+  hoverImage?: string;
   videoSrc: string;
   motionClassName: string;
 };
@@ -108,6 +109,7 @@ export const portfolioProjects: PortfolioProject[] = [
       { label: "Design System", icon: "system" },
     ],
     className: "project-card--mint",
+    hoverImage: "/Mediendatenbubble.png",
     videoSrc: "/bubbleblue.mp4",
     motionClassName: "project-card__motion-video--mint",
   },
@@ -132,6 +134,7 @@ export const portfolioProjects: PortfolioProject[] = [
     imageAlt: "Figma Workshop Projektbild",
     tags: [{ label: "Workshop", icon: "teacher" }],
     className: "project-card--workshop",
+    hoverImage: "/Workshopbubble.png",
     videoSrc: "/bubblegreen.mp4",
     motionClassName: "project-card__motion-video--workshop",
   },
@@ -184,6 +187,7 @@ export const portfolioProjects: PortfolioProject[] = [
       { label: "Design with AI", icon: "ai" },
     ],
     className: "project-card--installation",
+    hoverImage: "/Interactivebubble.png",
     videoSrc: "/bubbleblue.mp4",
     motionClassName: "project-card__motion-video--installation",
   },
@@ -210,6 +214,7 @@ export const portfolioProjects: PortfolioProject[] = [
       { label: "UI", icon: "ui" },
     ],
     className: "project-card--ar",
+    hoverImage: "/Globetrotterbubble.png",
     videoSrc: "/bubblegreen.mp4",
     motionClassName: "project-card__motion-video--ar",
   },

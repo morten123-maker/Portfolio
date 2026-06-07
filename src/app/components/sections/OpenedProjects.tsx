@@ -1,5 +1,4 @@
 import { MdClose } from "react-icons/md";
-import { ProjectsProps } from "../../page";
 import { CiGlobe } from "react-icons/ci";
 import Image from "next/image";
 import {
@@ -15,7 +14,9 @@ type ExperienceItemProps = {
   className?: string; // Optional className prop
 };
 
-type ProjectsPropsWithClassName = ProjectsProps & ExperienceItemProps;
+type ProjectsPropsWithClassName = ExperienceItemProps & {
+  onSetExperienceSection?: (section: string) => void;
+};
 
 export default function OpenedExperienceItem({
   onSetExperienceSection,
@@ -48,7 +49,7 @@ export default function OpenedExperienceItem({
           <button
             type="button"
             className="p-3 hover:bg-[#282828] rounded-full transition-colors  max-md:hidden"
-            onClick={onSetExperienceSection}
+            onClick={() => onSetExperienceSection?.("overview")}
             aria-label="Close expanded projects view"
           >
             <MdClose className="text-2xl" />

@@ -219,11 +219,14 @@ function ProfileIntroCard() {
       <ProfileImageSlider />
       <div className="profile-intro-card__copy">
         <p className="profile-intro-card__name">(He/Him)</p>
-        <h1>Hallo, I'm Morten</h1>
-        <p>I&apos;m a digital designer who believes great experiences start with listening.
-</p>
+        <h1>Hallo, I’m Morten</h1>
         <p>
-          I approach every project by getting close to people – their needs, their frustrations, their everyday realities. Design, for me, isn't about aesthetics alone. It's about creating spaces where people feel understood, empowered, and free.
+          I’m a digital designer who believes great experiences start with listening.
+        </p>
+        <p>
+          I approach every project by getting close to people – their needs, their frustrations,
+          their everyday realities. Design, for me, isn’t about aesthetics alone. It’s
+          about creating spaces where people feel understood, empowered, and free.
         </p>
         <p>I work best in collaboration: thinking together, building together, questioning together. I take on projects I believe in – ones that connect communities, remove barriers, and leave something useful behind.</p>
       </div>

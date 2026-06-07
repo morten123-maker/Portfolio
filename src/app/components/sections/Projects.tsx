@@ -435,9 +435,15 @@ function ProjectCard({ project, index, onOpen }: { project: PortfolioProject; in
       style={{ "--card-index": index } as CSSProperties}
       aria-label={`${project.detailTitle} öffnen`}
     >
-      <span className="project-card__media" aria-hidden="true">
-        <MotionVideo src={project.videoSrc} active={motionActive} className="project-card__motion" videoClassName={["project-card__motion-video", project.motionClassName].filter(Boolean).join(" ")} speed={1} />
-      </span>
+      {project.hoverImage ? (
+        <span className="project-card__media project-card__hover-media" aria-hidden="true">
+          <img src={project.hoverImage} alt="" className="project-card__hover-image" draggable={false} />
+        </span>
+      ) : (
+        <span className="project-card__media" aria-hidden="true">
+          <MotionVideo src={project.videoSrc} active={motionActive} className="project-card__motion" videoClassName={["project-card__motion-video", project.motionClassName].filter(Boolean).join(" ")} speed={1} />
+        </span>
+      )}
       <span className="project-card__overlay">
         <span className="project-card__shade" />
         <span className="project-card__content">
