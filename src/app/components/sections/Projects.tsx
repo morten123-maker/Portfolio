@@ -472,7 +472,7 @@ function AboutCard({ onOpen }: { onOpen: () => void }) {
     <button type="button" onClick={onOpen} className="project-card project-card--about is-motion-visible" aria-label="About me öffnen">
       <span className="project-card__about-media" aria-hidden="true">
         <img className="project-card__about-ocean-poster" src="/ocean-poster.jpg" alt="" />
-        <MotionVideo src="/oceanvid.MP4" active mode="loop" poster="/ocean-poster.jpg" fallbackImage="/ocean-poster.jpg" className="project-card__about-ocean" videoClassName="project-card__about-ocean-video" />
+        <MotionVideo src="/oceanvid.mp4" active mode="loop" poster="/ocean-poster.jpg" fallbackImage="/ocean-poster.jpg" className="project-card__about-ocean" videoClassName="project-card__about-ocean-video" />
         <img className="project-card__about-photo" src="/profil-2-auto.jpg" alt="" />
         <span className="project-card__about-gradient" />
       </span>
