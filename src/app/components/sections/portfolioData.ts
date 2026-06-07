@@ -23,6 +23,7 @@ export type PortfolioProject = {
   imageAlt: string;
   tags: ProjectTag[];
   className: string;
+  hoverImage?: string;
   videoSrc: string;
   motionClassName: string;
 };
@@ -89,14 +90,14 @@ export const portfolioProjects: PortfolioProject[] = [
     eyebrow: "Design • 2025",
     cardTitle: "MINT-Mediendatenbank",
     detailTitle: "MINT-Mediendatenbank • Design",
-    year: "2023-2026",
+    year: "2025",
     role: "UX/UI Designer",
     descriptionHeading: "What I've done",
     description:
-      "For three years I worked as a UX/UI designer at MINTvernetzt, shaping the community platform and products like the MINT-Mediendatenbank — an open space where educators find, share and build on each other's material.\n\nI stayed close to the people who actually use it. From the first concept and wireframes to the final UI and prototypes in Figma, every decision started with listening — user tests, workshops, real conversations. I wanted the platform to feel less like a tool and more like an open door: something that helps people find one another and keep building together.",
+      "The MINT-Mediendatenbank is an open image database for the MINT community in Germany — a place where educators, FabLabs, student labs and universities find CC-licensed assets for their everyday work, free of charge and right inside the MINTvernetzt community platform.\n\nOver an intense two-month design phase I shaped the whole product end to end: from the first concept and information architecture to the final UI and a clickable prototype in Figma. I wanted a search that inspires rather than just filters — suggesting related images while you look, offering the right formats and sizes for each platform on download, and letting people build and grab whole collections at once. A connected Sharepic generator turns a chosen image straight into a ready-to-post graphic.",
     learned:
-      "Ich habe gelernt, wie sehr gutes Design von einem gesunden Miteinander lebt. In einem kleinen Team auf Augenhöhe konnte ich meine Ideen einbringen und von einer erfahrenen Designerin viel mitnehmen – und gemerkt, dass ehrliche, klare Entscheidungen fast immer aus echten Gesprächen mit den Menschen entstehen, für die wir gestalten.",
-    visitUrl: "https://community.mint-vernetzt.de/",
+      "I learned how much clarity a tight timeline can force. With only two months, every screen had to earn its place — so I leaned on real user needs and quick prototype feedback to decide what truly mattered, and let the rest go.",
+    visitUrl: "https://mediendatenbank.mint-vernetzt.de",
     coverImage: assetCandidates("datenbank01", "mint-mediendatenbank-hero", "mediendatenbank-hero", "cover-1"),
     projectImage: assetCandidates("datenbank02", "mint-mediendatenbank-screen", "mediendatenbank-screen", "project-1", "lila"),
     secondaryImage: assetCandidates("datenbank03", "mint-design-system", "figma-mint", "project-1-secondary"),
@@ -108,6 +109,7 @@ export const portfolioProjects: PortfolioProject[] = [
       { label: "Design System", icon: "system" },
     ],
     className: "project-card--mint",
+    hoverImage: "/Mediendatenbubble.png",
     videoSrc: "/bubbleblue.mp4",
     motionClassName: "project-card__motion-video--mint",
   },
@@ -121,9 +123,9 @@ export const portfolioProjects: PortfolioProject[] = [
     role: "Workshop",
     descriptionHeading: "Description",
     description:
-      "I introduced a group of kids to the basics of UX and UI design — through play, quick sketches and a lot of curiosity. We started by framing a small problem together, then moved into first wireframes and tiny interactive prototypes in Figma.\n\nMy goal was simple: make design feel like it belongs to everyone, even at that age. The room stayed open and respectful, a place where every idea could become visible and no question was too small. Watching them turn their own thoughts into something they could tap and try was the best part of the day.",
+      "Over three days at the Adventure School I guided a group of kids through their first real design process — from a blank idea to an app they pitched themselves. We started with the basics of UX and UI and a short design-thinking input, then framed a shared challenge together: imagine an app for the MINT community in their region, built from their own point of view.\n\nDay one stayed analog and playful — quick sketches and paper prototypes made in small groups. On day two we moved into Figma, turned those paper screens into real designs and click-dummies, and developed a first feature. The last day was all about telling the story: we practiced how to pitch, and the kids presented their concepts out loud.\n\nMy goal was simple: make design feel like it belongs to everyone, even at that age. The room stayed open and respectful, a place where every idea could become visible and no question was too small. Watching them turn their own thoughts into something they could tap, try and present was the best part of all.",
     learned:
-      "Ich habe gelernt, dass Design am stärksten ist, wenn es einladend bleibt. Kinder gehen ohne Angst an Ideen heran – diese Offenheit hat mir gezeigt, wie viel Vertrauen und wie wenig Fachjargon es eigentlich braucht, damit Menschen sich trauen, selbst zu gestalten.",
+      "I learned that design is strongest when it stays inviting. Kids approach ideas without fear — that openness showed me how much trust, and how little jargon, it actually takes for people to dare to design something themselves.",
     visitUrl: "https://community.mint-vernetzt.de/",
     coverImage: assetCandidates("workshop01", "figma-workshop-hero", "workshop-hero", "cover-workshop"),
     projectImage: assetCandidates("workshop02", "figma-workshop-slide", "workshop-slide", "project-workshop"),
@@ -132,22 +134,24 @@ export const portfolioProjects: PortfolioProject[] = [
     imageAlt: "Figma Workshop Projektbild",
     tags: [{ label: "Workshop", icon: "teacher" }],
     className: "project-card--workshop",
+    hoverImage: "/Workshopbubble.png",
     videoSrc: "/bubblegreen.mp4",
     motionClassName: "project-card__motion-video--workshop",
   },
   {
     id: "design-with-ai",
     navTitle: "Community Design",
-    eyebrow: "2023-2026",
+    eyebrow: "MINTvernetzt • 2023–2026",
     cardTitle: "Community Design",
     detailTitle: "Community Design",
     year: "2023-2026",
     role: "UX/UI Designer",
-    descriptionHeading: "What I've explored",
+    descriptionHeading: "What I've done",
     description:
-      "This is an ongoing exploration of what community-centered design can look like when AI becomes part of the process. I'm curious how AI can support ideation, speed up visual iteration and make room for better decisions — without ever taking the decision away from people.\n\nFor me the real question is less about the technology and more about trust: how do we keep design honest and transparent, and firmly in human hands, while still letting it move faster and reach further?",
+      "For three years I worked as a UX/UI designer at MINTvernetzt, shaping the community platform that brings educators, initiatives and institutions across Germany together in one place. It's where people find each other, share what they've built and keep building on top of it.\n\nI stayed close to the people who actually use it. From first concepts and wireframes to the final UI and interactive prototypes in Figma, every decision started with listening — user tests, workshops, real conversations. I wanted the platform to feel less like a tool and more like an open door: something that helps a community find itself and grow.",
     learned:
-      "Ich habe gelernt, dass gute AI-Erfahrungen klare Grenzen, sichtbares Feedback und viel Kontext brauchen. AI wird erst dann wirklich hilfreich, wenn Menschen die Kontrolle behalten und jeden Zwischenschritt nachvollziehen können.",
+      "I learned how much good design depends on a healthy way of working together. In a small team on equal footing I could bring my own ideas in and learn a lot from an experienced designer — and I noticed that honest, clear decisions almost always grow out of real conversations with the people we design for.",
+    visitUrl: "https://community.mint-vernetzt.de/",
     coverImage: assetCandidates("ai01", "design-with-ai-hero", "design-with-ai", "cover-4"),
     projectImage: assetCandidates("ai02", "design-with-ai-screen", "project-4"),
     secondaryImage: assetCandidates("ai03", "design-with-ai-process", "project-4-secondary"),
@@ -155,7 +159,8 @@ export const portfolioProjects: PortfolioProject[] = [
     imageAlt: "Design with AI Projektbild",
     tags: [
       { label: "UX", icon: "ux" },
-      { label: "Design with AI", icon: "ai" },
+      { label: "UI", icon: "ui" },
+      { label: "Design System", icon: "system" },
     ],
     className: "project-card--ai",
     videoSrc: "/bubblegreen.mp4",
@@ -178,12 +183,12 @@ export const portfolioProjects: PortfolioProject[] = [
     projectImage: ["/berlin3.png"],
     secondaryImage: ["/berlin4.png"],
     fallbackGraphic: blueFallback,
-    imageAlt: "Interactive Installation Projektbild",
-    tags: [
+    imageAlt: "Interactive Installation Projektbild",    tags: [
       { label: "UX", icon: "ux" },
       { label: "Design with AI", icon: "ai" },
     ],
     className: "project-card--installation",
+    hoverImage: "/Interactivebubble.png",
     videoSrc: "/bubbleblue.mp4",
     motionClassName: "project-card__motion-video--installation",
   },
@@ -202,6 +207,7 @@ export const portfolioProjects: PortfolioProject[] = [
       "I learned how important clear anchors are in spatial interfaces. The experience had to feel playful, but people first needed orientation: what to scan, what to look at, and why the product was part of a greener choice.",
     coverImage: ["/globetrotter1.png"],
     projectImage: ["/globetrotter2.png"],
+    projectVideo: "/prototypglobe.mov",
     secondaryImage: ["/globetrotter3.png"],
     fallbackGraphic: greenFallback,
     imageAlt: "Augmented Reality App Projektbild",
@@ -210,6 +216,7 @@ export const portfolioProjects: PortfolioProject[] = [
       { label: "UI", icon: "ui" },
     ],
     className: "project-card--ar",
+    hoverImage: "/Globetrotterbubble.png",
     videoSrc: "/bubblegreen.mp4",
     motionClassName: "project-card__motion-video--ar",
   },

@@ -392,6 +392,26 @@ function GlobetrotterDetail({ project, projects, activeIndex, onSelect, onOvervi
             </div>
           </section>
 
+          {project.projectVideo && (
+            <section className="project-story-row project-story-row--ar-proto">
+              <div className="project-learned-v2 project-story-copy">
+                <h2>Prototype</h2>
+                <p>The whole experience lives in a single portrait screen — scan, land, explore. I prototyped it in Figma so the playful bubbles could actually move and react the way they would in the store.</p>
+                <p>Tapping a product reveals its greener-choice criteria one by one, keeping everything light, guided and easy to follow on a phone.</p>
+              </div>
+              <div className="ar-proto-video">
+                <video
+                  src={project.projectVideo}
+                  autoPlay
+                  loop
+                  muted
+                  playsInline
+                  className="ar-proto-video__media"
+                />
+              </div>
+            </section>
+          )}
+
           <section className="project-wide-image project-wide-image--full">
             <StoryImage src="/globetrotter3.png" fallback={fb} alt="Bubble system with sustainable criteria in the store" />
           </section>
@@ -452,12 +472,18 @@ function AboutCard({ onOpen }: { onOpen: () => void }) {
     <button type="button" onClick={onOpen} className="project-card project-card--about is-motion-visible" aria-label="About me öffnen">
       <span className="project-card__about-media" aria-hidden="true">
         <img className="project-card__about-ocean-poster" src="/ocean-poster.jpg" alt="" />
-        <MotionVideo src="/oceanvid.mp4" active mode="loop" poster="/ocean-poster.jpg" fallbackImage="/ocean-poster.jpg" className="project-card__about-ocean" videoClassName="project-card__about-ocean-video" />
+        <MotionVideo src="/oceanvid.MP4" active mode="loop" poster="/ocean-poster.jpg" fallbackImage="/ocean-poster.jpg" className="project-card__about-ocean" videoClassName="project-card__about-ocean-video" />
         <img className="project-card__about-photo" src="/profil-2-auto.jpg" alt="" />
         <span className="project-card__about-gradient" />
       </span>
       <span className="project-card__overlay">
         <span className="project-card__content project-card__content--about">
+          <span className="project-card__verified" aria-hidden="true">
+            <svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M20.5599 24.3296C21.5491 24.3296 22.9597 24.5219 23.7381 23.75C24.5227 22.972 24.3296 21.5555 24.3296 20.5599C24.3296 19.3018 24.6047 18.7232 25.5008 17.8272C26.8336 16.4945 27.5 15.828 27.5 15C27.5 14.1719 26.8336 13.5055 25.5008 12.1727C24.6049 11.2767 24.3296 10.6982 24.3296 9.44007C24.3296 8.44449 24.5228 7.02804 23.7383 6.25C22.9599 5.47809 21.5491 5.67033 20.5599 5.67033C19.4194 5.67033 18.6269 5.29884 17.8272 4.49921C16.4945 3.1664 15.8281 2.5 15 2.5C14.1719 2.5 13.5055 3.16636 12.1728 4.49909L12.1727 4.49921C11.3729 5.299 10.5803 5.67033 9.4401 5.67033C8.4445 5.67033 7.02804 5.47723 6.25 6.2618C5.47811 7.04017 5.67035 8.45081 5.67035 9.44007C5.67035 10.5803 5.299 11.3729 4.49919 12.1727L4.49913 12.1728C3.16638 13.5055 2.50001 14.1719 2.5 15C2.50002 15.828 3.16643 16.4945 4.49923 17.8272C5.3952 18.7232 5.67035 19.3018 5.67035 20.5599C5.67035 21.5555 5.47726 22.972 6.26186 23.75C7.04023 24.5219 8.45085 24.3296 9.44007 24.3296C10.6544 24.3296 11.2391 24.5671 12.1057 25.4338C12.8436 26.1718 13.8329 27.5 15 27.5C16.1671 27.5 17.1564 26.1718 17.8942 25.4338C18.7609 24.5671 19.3456 24.3296 20.5599 24.3296Z" fill="#21408F"/>
+              <path d="M11.25 16.1161C11.25 16.1161 12.75 16.9309 13.5 18.125C13.5 18.125 15.75 13.4375 18.75 11.875" stroke="#E7E3DC" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+          </span>
           <span className="project-card__eyebrow">About me • 1995</span>
           <span className="project-card__title">Morten Franken</span>
         </span>
