@@ -1,6 +1,7 @@
 "use client";
 
 import { CSSProperties, useMemo, useState } from "react";
+import type { ReactNode } from "react";
 import MotionVideo from "./MotionVideo";
 import SpotifyAlbum from "./SpotifyAlbum";
 import MobileFooter from "./MobileFooter";
@@ -15,6 +16,7 @@ type ProjectsProps = {
   onProjectSelect: (index: number) => void;
   onBackToOverview: () => void;
   onProfileSelect: () => void;
+  topline?: ReactNode;
 };
 
 function SvgIcon({ name, className = "" }: { name: string; className?: string }) {
@@ -486,7 +488,7 @@ function AboutCard({ onOpen }: { onOpen: () => void }) {
 }
 
 /* ── Overview ────────────────────────────────────────────── */
-export default function Projects({ activeProjectIndex, onProjectSelect, onBackToOverview, onProfileSelect }: ProjectsProps) {
+export default function Projects({ activeProjectIndex, onProjectSelect, onBackToOverview, onProfileSelect, topline }: ProjectsProps) {
   const openedProject = activeProjectIndex === null ? null : portfolioProjects[activeProjectIndex];
 
   if (openedProject) {
@@ -502,6 +504,8 @@ export default function Projects({ activeProjectIndex, onProjectSelect, onBackTo
   return (
     <section id="projects" className="projects-section projects-section--overview">
       <div className="overview-layout">
+        {/* Mobile-only: topline scrolls as first element */}
+        {topline}
         <div className="overview-row overview-row--top">
           <ProjectCard project={mint} index={0} onOpen={() => onProjectSelect(0)} />
           <ProjectCard project={workshop} index={1} onOpen={() => onProjectSelect(1)} />

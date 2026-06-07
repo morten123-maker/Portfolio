@@ -4,12 +4,14 @@
    block in globals.css (currently ~lines 1260–1412).
 
    Pixel reference: 390px artboard · 18px gutters · 354px content
-   · 12px gaps · floating 90px topline · stacked cover cards.
+   · 12px gaps · in-flow topline · stacked cover cards.
 
    FLOATING RULES (per Morten):
    · The "Overview" pill floats ONLY on About-me + single Project.
    · The Overview page has NO floating footer — Spotify + legal are
      normal in-flow elements at the end of the scroll.
+   · The "UX/UI Designer – …" topline does NOT float — it sits at the
+     top in the normal scroll flow like any other content.
 
    Scoped entirely to ≤720px — desktop/tablet rules are untouched.
    ════════════════════════════════════════════════════════════ */
@@ -22,28 +24,28 @@
     --page-top: 18px;
     --page-bottom: 18px;
     --gap: 12px;
-    --header-height: 90px;     /* ← floating topline, fixed height */
     --header-gap: 12px;
-    --mobile-topline-clear: calc(var(--page-top) + var(--header-height) + var(--header-gap));
     --mobile-float-clear: 78px; /* room under content for the floating Overview pill */
   }
 
-  .portfolio-shell { height: 100dvh; }
+  .portfolio-shell {
+    height: 100dvh;
+    display: flex;
+    flex-direction: column;
+  }
 
   /* ════════════════════════════════════════════════════════════
-     1 · FLOATING + STICKY TOPLINE (90px)
-     Lifted out of flow, pinned to top as a translucent glass pill.
-     Content scrolls under it; scroll regions pad themselves clear.
+     1 · IN-FLOW TOPLINE
+     Sits at the top of the page in the normal document flow.
+     It scrolls away with the content — it is NOT pinned.
      ════════════════════════════════════════════════════════════ */
   .site-topline {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
+    position: static;
     z-index: 30;
-    height: var(--header-height);
+    height: auto;
     padding: var(--page-top) var(--page-x) 0;
-    pointer-events: none;
+    pointer-events: auto;
+    flex: 0 0 auto;
   }
 
   .site-brand {
@@ -51,34 +53,36 @@
     box-sizing: border-box;
     display: flex;
     width: 100%;
-    height: var(--header-height);
+    height: auto;
     align-items: flex-start;
     padding: 6px 0 0;
-    overflow: hidden;
     white-space: normal;
     font-size: 24px;
     line-height: 30px;
     letter-spacing: -0.72px;        /* = -0.03em @ 24px, per Figma */
-    -webkit-mask-image: linear-gradient(180deg, #000 78%, transparent 100%);
-            mask-image: linear-gradient(180deg, #000 78%, transparent 100%);
   }
 
   .site-brand strong { color: var(--white); font-weight: 700; }
   .site-brand span   { color: #cdcdcd;     font-weight: 500; }
 
-  .portfolio-viewport { margin-top: 0; padding: 0 var(--page-x); }
+  .portfolio-viewport {
+    margin-top: 0;
+    padding: 0 var(--page-x);
+    flex: 1 1 auto;
+    min-height: 0;
+  }
 
   /* ════════════════════════════════════════════════════════════
      2 · OVERVIEW — single scrollable column of cover cards
      No floating footer here: Spotify + legal scroll in via
-     <MobileFooter/>. So only the topline clearance up top.
+     <MobileFooter/>. Topline is now in-flow, so no top clearance.
      ════════════════════════════════════════════════════════════ */
   .projects-section--overview {
     height: 100%;
     overflow-y: auto;
     overflow-x: hidden;
     -webkit-overflow-scrolling: touch;
-    padding: var(--mobile-topline-clear) 0 var(--page-bottom);
+    padding: var(--header-gap) 0 var(--page-bottom);
   }
 
   .overview-layout {
@@ -166,6 +170,7 @@
   /* ════════════════════════════════════════════════════════════
      3 · PROFILE / "About me" view
      Floating Overview pill present → reserve bottom space.
+     Topline is in-flow now → no top clearance.
      ════════════════════════════════════════════════════════════ */
   .profile-view {
     display: block;
@@ -173,7 +178,7 @@
     overflow-y: auto;
     overflow-x: hidden;
     -webkit-overflow-scrolling: touch;
-    padding: var(--mobile-topline-clear) 0 calc(var(--page-bottom) + var(--mobile-float-clear));
+    padding: var(--header-gap) 0 calc(var(--page-bottom) + var(--mobile-float-clear));
   }
 
   .profile-grid {

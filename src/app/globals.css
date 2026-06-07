@@ -104,6 +104,9 @@ img, video { display: block; }
   padding: var(--page-top) var(--page-x) 0;
 }
 
+/* In-scroll topline only shows on mobile — hidden on desktop */
+.site-topline--inscroll { display: none; }
+
 .site-brand {
   min-width: 0;
   overflow: hidden;
@@ -1280,15 +1283,20 @@ img, video { display: block; }
      Outside the scroll container so it never scrolls away.
      Solid black bg so it reads cleanly over the dark page.
      ════════════════════════════════════════════════════════ */
-  .site-topline {
-    position: static;             /* back to normal flow */
+  /* Desktop topline is hidden on mobile — the in-scroll version takes over */
+  .site-topline--desktop { display: none; }
+
+  /* In-scroll topline: 90px fixed height, wrapping text, sits inside
+     the scroll container so it scrolls away with the content */
+  .site-topline--inscroll {
     flex-shrink: 0;
-    height: var(--header-height);
+    height: var(--header-height);   /* 90px — stable, never jumps */
     padding: var(--page-top) var(--page-x) 0;
     background: var(--page-black);
+    overflow: hidden;
   }
 
-  .site-brand {
+  .site-topline--inscroll .site-brand {
     box-sizing: border-box;
     display: flex;
     width: 100%;
@@ -1297,13 +1305,18 @@ img, video { display: block; }
     padding: 6px 0 0;
     overflow: hidden;
     white-space: normal;
+    text-overflow: clip;
     font-size: 24px;
     line-height: 30px;
     letter-spacing: -0.72px;
+    background: transparent;
+    border: 0;
+    color: var(--white);
+    text-align: left;
   }
 
-  .site-brand strong { color: var(--white); font-weight: 700; }
-  .site-brand span   { color: #cdcdcd; font-weight: 500; }
+  .site-topline--inscroll .site-brand strong { color: var(--white); font-weight: 700; }
+  .site-topline--inscroll .site-brand span   { color: #cdcdcd; font-weight: 500; }
 
   /* Viewport takes remaining height normally */
   .portfolio-viewport {
@@ -1435,51 +1448,52 @@ img, video { display: block; }
   .profile-design-projects__label { position: absolute; left: 36px; right: 36px; bottom: 36px; font-size: 24px; line-height: 24px; }
 
   /* ════════════════════════════════════════════════════════
-     4 · FLOATING OVERVIEW BAR
-     — Overview page  : completely hidden
-     — Profile page   : solid pill anchored to bottom of shell
+     4 · FLOATING BOTTOM BAR — Figma exact
+     Both bars: 84px total (18px top + 48px button + 18px bottom)
+     Container: #000000. Button: 48px high, 6px radius, #131313.
+     Floating_About  → only Overview button, full width
      ════════════════════════════════════════════════════════ */
   .site-bottombar--overview { display: none; }
 
   .site-bottombar--profile {
-    /* Removed from flex flow, anchored to bottom of the shell */
     position: absolute;
-    bottom: 0; left: 0; right: 0;
+    left: 0; right: 0; bottom: 0;
     z-index: 25;
     display: flex;
-    justify-content: center;
     align-items: center;
-    /* 18px from screen edges, 18px from bottom (safe area aware) */
-    padding: 0 var(--page-x) max(var(--page-bottom), env(safe-area-inset-bottom));
-    height: calc(48px + var(--page-bottom) + max(0px, env(safe-area-inset-bottom)));
+    justify-content: center;
+    padding: 18px var(--page-x) max(18px, env(safe-area-inset-bottom));
+    background: #000000;
     pointer-events: none;
   }
 
-  /* Hide desktop-only elements inside the bar */
   .site-bottombar__spacer,
   .site-bottombar__legal,
   .site-bottombar .spotify-compact { display: none; }
 
-  /* The pill — solid #131313, radius 6px, per Figma design context */
   .site-bottombar__overview {
     pointer-events: auto;
-    margin: 0;
     width: 100%;
-    max-width: 354px;
     height: 48px;
+    display: flex;
+    align-items: center;
     justify-content: center;
-    border-radius: var(--small-radius);       /* 6px */
+    gap: 10px;
+    padding: 0 18px;
+    border-radius: 6px;
     background: #131313;
-    -webkit-backdrop-filter: none;
-            backdrop-filter: none;
     font-size: 16px;
+    font-weight: 500;
     letter-spacing: -0.48px;
+    color: rgba(255, 255, 255, 0.92);
+    margin: 0;
+    border: 0;
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
   }
 
   .site-bottombar__overview:hover,
-  .site-bottombar__overview.is-active {
-    background: #1c1c1c;
-  }
+  .site-bottombar__overview.is-active { background: #1c1c1c; }
 
   /* ════════════════════════════════════════════════════════
      5 · SPOTIFY CARD
@@ -1561,7 +1575,74 @@ img, video { display: block; }
   .more-projects__grid { grid-template-columns: 1fr; }
   .project-page-footer { grid-template-columns: 1fr; padding: 12px 18px 18px; }
   .project-page-footer .spotify-compact { height: 126px; }
+
+  /* ════════════════════════════════════════════════════════
+     FLOATING BOTTOM BAR — Floating_Project (Figma exact)
+     84px: 18px top + 48px buttons + 18px bottom. Fill #000.
+     [ ← 48×48px ]  [ Overview flex-grow 48px ]  [ → 48×48px ]
+     All buttons: radius 6px, fill #131313.
+     ════════════════════════════════════════════════════════ */
+  .project-detail-v2 > .detail-nav {
+    position: absolute;
+    top: auto; left: 0; right: 0; bottom: 0;
+    z-index: 30;
+    height: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 18px;
+    padding: 18px var(--page-x) max(18px, env(safe-area-inset-bottom));
+    background: #000000;
+    border-bottom: 0;
+    pointer-events: none;
+  }
+
+  .detail-nav__overview {
+    pointer-events: auto;
+    flex: 1 1 auto;
+    height: 48px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 0 18px;
+    border-radius: 6px;
+    background: #131313;
+    color: rgba(255, 255, 255, 0.92);
+    font-size: 16px;
+    font-weight: 500;
+    letter-spacing: -0.48px;
+    border: 0;
+  }
+  .detail-nav__overview span { display: inline; }
+
+  /* Arrow wrapper dissolves — children become direct flex items */
+  .detail-nav__arrows { display: contents; }
+
+  .detail-nav__arrow {
+    pointer-events: auto;
+    flex: 0 0 48px;
+    width: 48px;
+    height: 48px;
+    padding: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 6px;
+    background: #131313;
+    color: rgba(255, 255, 255, 0.92);
+    border: 0;
+  }
+  .detail-nav__arrow span { display: none; }
+  .detail-nav__arrow--prev { order: -1; }
+  .detail-nav__arrow--next { order:  1; }
+
+  /* Scroll area: clear the 84px bar at bottom */
+  .project-detail-v2__scroll {
+    padding: 6px 18px calc(84px + max(0px, env(safe-area-inset-bottom)));
+  }
 }
+
 
 /* ══════════════════════════════════════════════════════════
    PROJECT DETAIL V2 — new full-page layout
@@ -1960,16 +2041,6 @@ img, video { display: block; }
 }
 
 @media (max-width: 600px) {
-  .detail-nav {
-    height: 64px;
-    gap: 10px;
-    padding: 0 14px;
-  }
-  .detail-nav__overview span { display: none; }
-  .detail-nav__overview { padding: 9px; }
-  .detail-nav__arrow { padding: 9px 12px; gap: 7px; }
-  .detail-nav__arrow span { display: none; }
-  .project-detail-v2__scroll { padding: 6px 10px 10px; }
   .project-intro-v2 { padding: 24px 18px 36px; }
   .project-intro-v2__title { font-size: 26px; }
   .project-showcase-v2 { padding: 30px 18px; }

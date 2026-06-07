@@ -42,7 +42,13 @@ const taglines = [
 ];
 
 /* ── Topline with typewriter effect ──────────────────────── */
-function SiteTopline({ onOverviewClick }: { onOverviewClick: () => void }) {
+function SiteTopline({
+  onOverviewClick,
+  className = "site-topline",
+}: {
+  onOverviewClick: () => void;
+  className?: string;
+}) {
   const [index, setIndex] = useState(0);
   const [displayed, setDisplayed] = useState("");
   const [deleting, setDeleting] = useState(false);
@@ -76,7 +82,7 @@ function SiteTopline({ onOverviewClick }: { onOverviewClick: () => void }) {
   }, [displayed, deleting, index]);
 
   return (
-    <div className="site-topline" aria-label="Intro">
+    <div className={className} aria-label="Intro">
       <button type="button" className="site-brand" onClick={onOverviewClick}>
         <strong>UX/UI Designer</strong>
         <span> – {displayed}<span aria-hidden="true">|</span></span>
@@ -220,13 +226,13 @@ function ProfileIntroCard() {
       <ProfileImageSlider />
       <div className="profile-intro-card__copy">
         <p className="profile-intro-card__name">(He/Him)</p>
-        <h1>Hallo, I'm Morten</h1>
+        <h1>Hallo, I&apos;m Morten</h1>
         <p>
-          I'm a digital designer who believes great experiences start with listening.
+          I&apos;m a digital designer who believes great experiences start with listening.
         </p>
         <p>
           I approach every project by getting close to people – their needs, their frustrations,
-          their everyday realities. Design, for me, isn't about aesthetics alone. It's
+          their everyday realities. Design, for me, isn&apos;t about aesthetics alone. It&apos;s
           about creating spaces where people feel understood, empowered, and free.
         </p>
         <p>
@@ -267,9 +273,20 @@ function AllDesignProjectsTile({ onOverviewClick }: { onOverviewClick: () => voi
 }
 
 /* ── Profile view ─────────────────────────────────────────── */
-function ProfileView({ onOverviewClick }: { onOverviewClick: () => void }) {
+function ProfileView({
+  onOverviewClick,
+  onOverviewToplineClick,
+}: {
+  onOverviewClick: () => void;
+  onOverviewToplineClick: () => void;
+}) {
   return (
     <section className="profile-view" aria-label="About me">
+      {/* Mobile-only: topline scrolls inside this container */}
+      <SiteTopline
+        onOverviewClick={onOverviewToplineClick}
+        className="site-topline site-topline--inscroll"
+      />
       <div className="profile-grid">
         <ProfileIntroCard />
         <HoverResumeCard
@@ -314,19 +331,34 @@ export default function HomeClient() {
 
   return (
     <main className="portfolio-shell">
+      {/* Desktop only — hidden on mobile via CSS */}
       {activeProjectIndex === null && (
-        <SiteTopline onOverviewClick={openOverview} />
+        <SiteTopline
+          onOverviewClick={openOverview}
+          className="site-topline site-topline--desktop"
+        />
       )}
 
       <div className={["portfolio-viewport", activeProjectIndex !== null ? "portfolio-viewport--project-open" : ""].filter(Boolean).join(" ")}>
         {activeView === "profile" ? (
-          <ProfileView onOverviewClick={openOverview} />
+          <ProfileView
+            onOverviewClick={openOverview}
+            onOverviewToplineClick={openOverview}
+          />
         ) : (
           <Projects
             activeProjectIndex={activeProjectIndex}
             onProjectSelect={openProject}
             onBackToOverview={openOverview}
             onProfileSelect={openProfile}
+            topline={
+              activeProjectIndex === null ? (
+                <SiteTopline
+                  onOverviewClick={openOverview}
+                  className="site-topline site-topline--inscroll"
+                />
+              ) : undefined
+            }
           />
         )}
       </div>
