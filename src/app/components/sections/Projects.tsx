@@ -289,7 +289,7 @@ function InstallationDetail({ project, projects, activeIndex, onSelect, onOvervi
       <DetailNav projects={projects} activeIndex={activeIndex} onSelect={onSelect} onOverview={onOverview} />
       <div className="project-detail-v2__scroll">
         <section className="project-hero-v2">
-          <Img src="/berlin1.png" fallback={fb} alt="Connected Dependencies installation view" className="project-hero-v2__image" />
+          <Img src="/berlin2.png" fallback={fb} alt="Connected Dependencies installation view" className="project-hero-v2__image" />
         </section>
 
         <div className="project-detail-v2__container" style={{ marginTop: 18 }}>

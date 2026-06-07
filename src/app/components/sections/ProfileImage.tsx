@@ -7,6 +7,8 @@ const profileImages = [
   "/profil-1.jpg",
   "/profil-2-auto.jpg",
   "/profil-3.jpg",
+  "/profil-4.jpg",
+  "/profil-5.jpg",
 
 ];
 

@@ -1491,7 +1491,7 @@ img, video { display: block; }
 .project-hero-v2 {
   position: relative;
   width: 100%;
-  height: clamp(480px, 75vh, 900px);
+  height: clamp(480px, 85vh, 900px);
   overflow: hidden;
   background: #1a1a1a;
   border-radius: 12px 12px 0 0;  /* top radius matches container */
